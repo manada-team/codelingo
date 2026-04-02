@@ -1,0 +1,63 @@
+body {
+  font-family: 'Courier New', monospace; /* tipografía retro */
+  background: linear-gradient(180deg, #FFC0CB, #FFF5E1); /* gradiente girly */
+  margin: 0;
+  padding: 0;
+}
+
+.retro-header {
+  background: linear-gradient(90deg, #FF69B4, #FFC0CB);
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 0;
+}
+
+nav li {
+  color: #FFF5E1;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.retro-main {
+  padding: 2rem;
+  text-align: center;
+}
+
+.retro-main h2 {
+  color: #FF69B4;
+}
+
+button {
+  background-color: #FFC0CB;
+  border: 2px solid #FF69B4;
+  padding: 0.8rem 1.2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 12px;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #FF69B4;
+  color: white;
+  transform: scale(1.05);
+}
+
+.retro-footer {
+  background: #FF69B4;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  font-style: italic;
+}
