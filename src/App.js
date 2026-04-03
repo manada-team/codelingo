@@ -16,7 +16,7 @@ function App() {
       </header>
       <main className="retro-main">
         <section>
-          <h2>Bienvenido a CODELINGO</h2>
+          <h2>Bienvenido a CODELINGO - testing frnt-1 branch</h2>
           <p>Resuelve desafíos con programación.</p>
           <button>Comenzar</button>
         </section>
