@@ -1,0 +1,116 @@
+.auth-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, #FFC0CB, #FFF5E1);
+    font-family: 'Courier New', monospace;
+}
+
+.auth-card {
+    background: white;
+    border: 2px solid #FF69B4;
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 4px 4px 0px #FF69B4;
+    text-align: center;
+}
+
+.auth-logo {
+    color: #FF69B4;
+    font-size: 2rem;
+    margin: 0 0 0.25rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.auth-subtitle {
+    color: #aaa;
+    font-size: 0.85rem;
+    margin: 0 0 1.5rem;
+}
+
+.auth-tabs {
+    display: flex;
+    margin-bottom: 1.25rem;
+    border: 2px solid #FF69B4;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.auth-tab {
+    flex: 1;
+    background: white;
+    border: none;
+    padding: 0.6rem;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    font-size: 0.85rem;
+    cursor: pointer;
+    color: #FF69B4;
+    transition: all 0.2s ease;
+    box-shadow: none;
+    border-radius: 0;
+    transform: none;
+}
+
+.auth-tab:hover {
+    background: #FFC0CB;
+    color: white;
+    transform: none;
+}
+
+.auth-tab.active {
+    background: #FF69B4;
+    color: white;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: left;
+}
+
+.auth-form label {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #FF69B4;
+    margin-top: 0.25rem;
+}
+
+.auth-form input {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    padding: 0.55rem 0.75rem;
+    border: 2px solid #FFC0CB;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.2s;
+    background: #FFF5E1;
+}
+
+.auth-form input:focus {
+    border-color: #FF69B4;
+}
+
+.auth-form button[type='submit'] {
+    margin-top: 1rem;
+    width: 100%;
+    padding: 0.7rem;
+    font-size: 1rem;
+}
+
+.auth-error {
+    background: #ffe0e0;
+    border: 1px solid #ff9999;
+    color: #cc0000;
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+    text-align: left;
+}
+
