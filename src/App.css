@@ -1,9 +1,21 @@
+html, body, #root {
+  height: 100%;
+}
+
 body {
   font-family: 'Courier New', monospace; /* tipografía retro */
   background: linear-gradient(180deg, #FFC0CB, #FFF5E1); /* gradiente girly */
   margin: 0;
   padding: 0;
 }
+
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
 
 .retro-header {
   background: linear-gradient(90deg, #FF69B4, #FFC0CB);

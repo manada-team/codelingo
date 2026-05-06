@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import './App.css';
 import AuthScreen from './components/AuthScreen';
+import GameScreen from './components/GameScreen';
+import './components/GameScreen.css';
 
 function App() {
     const [user, setUser] = useState(() => {
@@ -8,6 +10,8 @@ function App() {
         const username = localStorage.getItem('username');
         return token ? { token, username } : null;
     });
+    const [screen, setScreen] = useState('home');
+
 
     function handleAuthSuccess(data) {
         setUser({ token: data.token, username: data.username });
@@ -17,6 +21,8 @@ function App() {
         localStorage.removeItem('token');
         localStorage.removeItem('username');
         setUser(null);
+        setScreen('home');
+
     }
 
     if (!user) {
@@ -29,8 +35,8 @@ function App() {
                 <h1>Codelingo</h1>
                 <nav>
                     <ul>
-                        <li>Inicio</li>
-                        <li>Juego</li>
+                        <li onClick={() => setScreen('home')}>Inicio</li>
+                        <li onClick={() => setScreen('game')}>Juego</li>
                         <li>Contacto</li>
                         <li className="nav-user">
                             <span>Hola, {user.username}</span>
@@ -40,11 +46,16 @@ function App() {
                 </nav>
             </header>
             <main className="retro-main">
-                <section>
-                    <h2>Bienvenido a CODELINGO</h2>
-                    <p>Resuelve desafíos con programación.</p>
-                    <button>Comenzar</button>
-                </section>
+                {screen === 'home' && (
+                    <section>
+                        <h2>Bienvenido a CODELINGO</h2>
+                        <p>Resuelve desafíos con programación.</p>
+                        <button onClick={() => setScreen('game')}>Comenzar</button>
+                    </section>
+                )}
+                {screen === 'game' && (
+                    <GameScreen onBack={() => setScreen('home')} />
+                )}
             </main>
             <footer className="retro-footer">
                 <p>© 2026 Codelingo</p>
