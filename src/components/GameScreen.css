@@ -1,0 +1,244 @@
+.game-screen {
+    display: grid;
+    grid-template-rows: auto 1fr 90px 190px;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* ── Toolbar ─────────────────────────────────────────────────────────────── */
+.game-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background: #2d2d2d;
+    border-bottom: 2px solid #FF69B4;
+    flex-shrink: 0;
+}
+
+.lang-tabs {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.lang-tab {
+    background: transparent;
+    border: 1px solid #555;
+    color: #ccc;
+    padding: 0.35rem 0.9rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: none;
+}
+
+.lang-tab:hover {
+    border-color: #FF69B4;
+    color: #FF69B4;
+    background: transparent;
+    transform: none;
+}
+
+.lang-tab.active {
+    background: #FF69B4;
+    border-color: #FF69B4;
+    color: white;
+}
+
+.lang-tab.active:hover {
+    background: #FF69B4;
+    transform: none;
+}
+
+.game-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.exec-time {
+    color: #888;
+    font-size: 0.8rem;
+    font-family: 'Courier New', monospace;
+}
+
+.run-btn {
+    background: #4CAF50;
+    border: none;
+    color: white;
+    padding: 0.4rem 1.1rem;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-shadow: none;
+    transition: background 0.2s;
+}
+
+.run-btn:hover:not(:disabled) {
+    background: #43a047;
+    transform: none;
+    color: white;
+}
+
+.run-btn:disabled {
+    background: #555;
+    cursor: not-allowed;
+    transform: none;
+    color: #aaa;
+}
+
+.back-btn {
+    background: transparent;
+    border: 1px solid #555;
+    color: #aaa;
+    padding: 0.35rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    box-shadow: none;
+    transition: all 0.2s;
+}
+
+.back-btn:hover {
+    border-color: #FFC0CB;
+    color: #FFC0CB;
+    background: transparent;
+    transform: none;
+}
+
+/* ── Editor ──────────────────────────────────────────────────────────────── */
+.editor-wrapper {
+    overflow: hidden;
+    background: #1e1e1e;
+    min-height: 0;
+}
+
+/* ── Stdin ───────────────────────────────────────────────────────────────── */
+.stdin-panel {
+    height: 90px;
+    background: #1a1a2e;
+    border-top: 1px solid #333;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.stdin-header {
+    padding: 0.25rem 1rem;
+    background: #2d2d2d;
+    color: #aaa;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    flex-shrink: 0;
+}
+
+.stdin-body {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ccc;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    padding: 0.4rem 1rem;
+    resize: none;
+    box-shadow: none;
+}
+
+.stdin-body::placeholder {
+    color: #444;
+    font-style: italic;
+}
+
+/* ── Console ─────────────────────────────────────────────────────────────── */
+.console-panel {
+    height: 190px;
+    background: #12121f;
+    border-top: 2px solid #333;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    transition: border-top-color 0.3s;
+}
+
+.console-panel.has-output {
+    border-top-color: #FF69B4;
+}
+
+.console-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.3rem 1rem;
+    background: #2d2d2d;
+    color: #FF69B4;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    flex-shrink: 0;
+}
+
+.clear-btn {
+    background: transparent;
+    border: 1px solid #444;
+    color: #888;
+    padding: 0.15rem 0.55rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    box-shadow: none;
+}
+
+.clear-btn:hover {
+    border-color: #FF69B4;
+    color: #FF69B4;
+    background: transparent;
+    transform: none;
+}
+
+.console-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.75rem 1rem;
+}
+
+.console-placeholder {
+    color: #444;
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+.console-loading {
+    color: #FFC0CB;
+    font-size: 0.85rem;
+    animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.35; }
+}
+
+.console-output {
+    color: #e0e0e0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.console-stderr {
+    color: #ff6b6b;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
