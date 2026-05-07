@@ -45,7 +45,7 @@ function App() {
                     </ul>
                 </nav>
             </header>
-            <main className="retro-main">
+            <main className={`retro-main${screen === 'game' ? ' game-mode' : ''}`}>
                 {screen === 'home' && (
                     <section>
                         <h2>Bienvenido a CODELINGO</h2>
