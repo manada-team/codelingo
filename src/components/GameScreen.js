@@ -1,14 +1,12 @@
 import { useState, useRef } from 'react';
 import Editor from '@monaco-editor/react';
 import './GameScreen.css';
-
 const LANGUAGES = {
     python: {
         label: 'Python',
         monacoLang: 'python',
         defaultCode: `# Bienvenido al playground de Python!
 print("Hola, Codelingo!")
- 
 # Probá con algo más:
 for i in range(5):
     print(f"Número: {i}")
@@ -18,14 +16,11 @@ for i in range(5):
         label: 'C',
         monacoLang: 'c',
         defaultCode: `#include <stdio.h>
- 
 int main() {
     printf("Hola, Codelingo!\\n");
- 
     for (int i = 0; i < 5; i++) {
         printf("Número: %d\\n", i);
     }
- 
     return 0;
 }
 `,
@@ -45,33 +40,29 @@ public class Main {
 `,
     },
 };
-
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8081';
-
+let activeEditor = null;
 function GameScreen({ onBack }) {
-    const editorRef = useRef(null);
     const codeRef = useRef(LANGUAGES.python.defaultCode);
     const [language, setLanguage] = useState('python');
     const [output, setOutput] = useState('');
     const [stderr, setStderr] = useState('');
     const [loading, setLoading] = useState(false);
     const [timeMs, setTimeMs] = useState(null);
-    const [stdin, setStdin] = useState('');
 
     function handleLanguageChange(lang) {
         setLanguage(lang);
-        codeRef.current = LANGUAGES[lang].defaultCode;
         setOutput('');
         setStderr('');
         setTimeMs(null);
     }
-
     async function handleRun() {
+        const code = codeRef.current;
+        console.log('code enviado:', code);
         setLoading(true);
         setOutput('');
         setStderr('');
         setTimeMs(null);
-
         const token = localStorage.getItem('token');
         try {
             const res = await fetch(`${API_URL}/api/execute`, {
@@ -80,14 +71,9 @@ function GameScreen({ onBack }) {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
                 },
-                body: JSON.stringify({
-                    code: codeRef.current,
-                    language,
-                    stdin,
-                }),
+                body: JSON.stringify({ code: codeRef.current, language }),
             });
             const data = await res.json();
-
             if (data.error) {
                 setStderr(data.error);
             } else {
@@ -101,15 +87,12 @@ function GameScreen({ onBack }) {
             setLoading(false);
         }
     }
-
     function handleClear() {
         setOutput('');
         setStderr('');
         setTimeMs(null);
     }
-
     const hasOutput = output || stderr;
-
     return (
         <div className="game-screen">
             <div className="game-toolbar">
@@ -134,17 +117,18 @@ function GameScreen({ onBack }) {
                     <button className="back-btn" onClick={onBack}>← Inicio</button>
                 </div>
             </div>
-
             <div className="editor-wrapper">
                 <Editor
                     key={language}
                     height="100%"
                     language={LANGUAGES[language].monacoLang}
                     defaultValue={LANGUAGES[language].defaultCode}
-                    onChange={(val) => { codeRef.current = val || ''; }}
                     onMount={(editor) => {
-                        editorRef.current = editor;
-                        codeRef.current = LANGUAGES[language].defaultCode;
+                        activeEditor = editor;
+                        codeRef.current = editor.getValue();
+                        editor.onDidChangeModelContent(() => {
+                            codeRef.current = editor.getValue();
+                        });
                         setTimeout(() => editor.layout(), 50);
                     }}
                     theme="vs-dark"
@@ -157,17 +141,6 @@ function GameScreen({ onBack }) {
                         automaticLayout: true,
                         padding: { top: 12 },
                     }}
-                />
-            </div>
-
-            <div className="stdin-panel">
-                <div className="stdin-header">Entrada (stdin)</div>
-                <textarea
-                    className="stdin-body"
-                    placeholder="Escribí los valores de entrada, uno por línea..."
-                    value={stdin}
-                    onChange={(e) => setStdin(e.target.value)}
-                    spellCheck={false}
                 />
             </div>
 
@@ -196,6 +169,4 @@ function GameScreen({ onBack }) {
         </div>
     );
 }
-
 export default GameScreen;
-

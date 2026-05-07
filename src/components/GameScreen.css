@@ -1,6 +1,6 @@
 .game-screen {
     display: grid;
-    grid-template-rows: auto 1fr 90px 190px;
+    grid-template-rows: auto 1fr 190px;
     flex: 1;
     min-height: 0;
     overflow: hidden;
