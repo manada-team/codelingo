@@ -636,3 +636,111 @@
     white-space: pre-wrap;
     word-break: break-word;
 }
+
+/* ── Navegador de niveles ── */
+.level-nav {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.level-nav-toggle {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #FFF5E1;
+    border: 2px solid #FFC0CB;
+    border-radius: 10px;
+    padding: 0.55rem 0.85rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #FF69B4;
+    cursor: pointer;
+    box-shadow: none;
+    transform: none;
+    transition: border-color 0.2s;
+}
+
+.level-nav-toggle:hover {
+    border-color: #FF69B4;
+    background: #FFF5E1;
+    transform: none;
+}
+
+.level-nav-progress {
+    font-weight: normal;
+    color: #aaa;
+}
+
+.level-nav-arrow {
+    font-size: 0.7rem;
+    color: #FF69B4;
+}
+
+.level-nav-list {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: white;
+    border: 2px solid #FFC0CB;
+    border-radius: 10px;
+    box-shadow: 3px 3px 0 #FFC0CB;
+    list-style: none;
+    padding: 0.4rem;
+    margin: 0;
+    max-height: 260px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.level-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.65rem;
+    border-radius: 7px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-size: 0.82rem;
+    transition: background 0.15s;
+    color: #555;
+}
+
+.level-nav-item:hover {
+    background: #FFF5E1;
+}
+
+.level-nav-item.current {
+    background: #FFF0F5;
+    color: #FF69B4;
+    font-weight: bold;
+}
+
+.level-nav-item.done {
+    color: #888;
+}
+
+.level-nav-status {
+    font-size: 0.8rem;
+    width: 18px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.level-nav-num {
+    color: #FF69B4;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+    min-width: 28px;
+}
+
+.level-nav-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
