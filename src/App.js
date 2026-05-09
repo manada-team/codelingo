@@ -2,32 +2,37 @@ import { useState } from 'react';
 import './App.css';
 import AuthScreen from './components/AuthScreen';
 import GameScreen from './components/GameScreen';
+import AdminScreen from './components/AdminScreen';
 import './components/GameScreen.css';
+import ProfileScreen from './components/ProfileScreen';
 
 function App() {
     const [user, setUser] = useState(() => {
         const token = localStorage.getItem('token');
         const username = localStorage.getItem('username');
-        return token ? { token, username } : null;
+        const role = localStorage.getItem('role');
+        return token ? { token, username, role } : null;
     });
     const [screen, setScreen] = useState('home');
 
-
     function handleAuthSuccess(data) {
-        setUser({ token: data.token, username: data.username });
+        localStorage.setItem('role', data.role);
+        setUser({ token: data.token, username: data.username, role: data.role });
     }
 
     function handleLogout() {
         localStorage.removeItem('token');
         localStorage.removeItem('username');
+        localStorage.removeItem('role');
         setUser(null);
         setScreen('home');
-
     }
 
     if (!user) {
         return <AuthScreen onAuthSuccess={handleAuthSuccess} />;
     }
+
+    const isAdmin = user.role === 'ADMIN';
 
     return (
         <div className="App">
@@ -37,6 +42,10 @@ function App() {
                     <ul>
                         <li onClick={() => setScreen('home')}>Inicio</li>
                         <li onClick={() => setScreen('game')}>Juego</li>
+                        <li onClick={() => setScreen('profile')}>Perfil</li>
+                        {isAdmin && (
+                            <li onClick={() => setScreen('admin')}>Admin</li>
+                        )}
                         <li>Contacto</li>
                         <li className="nav-user">
                             <span>Hola, {user.username}</span>
@@ -55,6 +64,12 @@ function App() {
                 )}
                 {screen === 'game' && (
                     <GameScreen onBack={() => setScreen('home')} />
+                )}
+                {screen === 'admin' && isAdmin && (
+                    <AdminScreen />
+                )}
+                {screen === 'profile' && (
+                    <ProfileScreen user={user} />
                 )}
             </main>
             <footer className="retro-footer">

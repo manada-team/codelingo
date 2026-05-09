@@ -49,6 +49,8 @@ nav li {
 .retro-main {
   padding: 2rem;
   text-align: center;
+  flex: 1;
+  overflow-y: auto;
 }
 
 .retro-main h2 {

@@ -25,6 +25,7 @@ function AuthScreen({ onAuthSuccess }) {
             if (!res.ok) throw new Error(data.message || 'Error al iniciar sesión');
             localStorage.setItem('token', data.token);
             localStorage.setItem('username', data.username);
+            localStorage.setItem('role', data.role);
             onAuthSuccess(data);
         } catch (err) {
             setError(err.message);

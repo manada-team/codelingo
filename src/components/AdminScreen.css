@@ -1,0 +1,178 @@
+.admin-screen {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    font-family: 'Courier New', monospace;
+    align-items: flex-start;
+}
+
+.admin-left {
+    flex: 1;
+    min-width: 0;
+}
+
+.admin-right {
+    width: 340px;
+    flex-shrink: 0;
+}
+
+.admin-title {
+    color: #FF69B4;
+    font-size: 1.3rem;
+    margin: 0 0 1.25rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.admin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.admin-row {
+    display: flex;
+    gap: 1rem;
+}
+
+.admin-row .admin-field {
+    flex: 1;
+}
+
+.admin-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.admin-field label {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #FF69B4;
+}
+
+.admin-optional {
+    font-weight: normal;
+    color: #aaa;
+}
+
+.admin-field input,
+.admin-field textarea,
+.admin-field select {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    padding: 0.55rem 0.75rem;
+    border: 2px solid #FFC0CB;
+    border-radius: 8px;
+    outline: none;
+    background: #FFF5E1;
+    transition: border-color 0.2s;
+    resize: vertical;
+}
+
+.admin-field input:focus,
+.admin-field textarea:focus,
+.admin-field select:focus {
+    border-color: #FF69B4;
+}
+
+.admin-submit {
+    margin-top: 0.5rem;
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
+    align-self: flex-start;
+}
+
+.admin-error {
+    background: #ffe0e0;
+    border: 1px solid #ff9999;
+    color: #cc0000;
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+}
+
+.admin-success {
+    background: #e0ffe0;
+    border: 1px solid #99dd99;
+    color: #226622;
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+}
+
+.admin-loading {
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.admin-levels-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.admin-level-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #FFF5E1;
+    border: 2px solid #FFC0CB;
+    border-radius: 10px;
+    padding: 0.6rem 0.85rem;
+    gap: 0.5rem;
+}
+
+.admin-level-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+}
+
+.admin-level-num {
+    font-size: 0.7rem;
+    color: #FF69B4;
+    font-weight: bold;
+}
+
+.admin-level-title {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.admin-level-group {
+    font-size: 0.75rem;
+    color: #888;
+}
+
+.admin-delete-btn {
+    background: #ffe0e0;
+    border: 2px solid #ff9999;
+    color: #cc0000;
+    border-radius: 8px;
+    padding: 0.3rem 0.6rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.75rem;
+    cursor: pointer;
+    flex-shrink: 0;
+    box-shadow: none;
+    transform: none;
+    transition: background 0.2s;
+}
+
+.admin-delete-btn:hover {
+    background: #ffcccc;
+    transform: none;
+}

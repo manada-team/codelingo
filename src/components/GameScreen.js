@@ -33,29 +33,75 @@ function GameScreen({ onBack }) {
     const [levels, setLevels] = useState([]);
     const [levelIndex, setLevelIndex] = useState(0);
     const [levelLoading, setLevelLoading] = useState(true);
+    const [completedIds, setCompletedIds] = useState(new Set());
+    const [savedAnswers, setSavedAnswers] = useState({});
     const [playerAnswer, setPlayerAnswer] = useState('');
     const [checkResult, setCheckResult] = useState(null);
     const [checkLoading, setCheckLoading] = useState(false);
+    const [showLevelNav, setShowLevelNav] = useState(false);
+
     const level = levels[levelIndex] || null;
     const isLastLevel = levelIndex === levels.length - 1;
+
     useEffect(() => {
-        async function fetchLevels() {
+        async function fetchData() {
             setLevelLoading(true);
             const token = localStorage.getItem('token');
             try {
-                const res = await fetch(`${API_URL}/api/levels`, {
-                    headers: { 'Authorization': `Bearer ${token}` },
-                });
-                const data = await res.json();
-                setLevels(data);
+                const [levelsRes, progressRes] = await Promise.all([
+                    fetch(`${API_URL}/api/levels`, {
+                        headers: { 'Authorization': `Bearer ${token}` },
+                    }),
+                    fetch(`${API_URL}/api/users/me/progress`, {
+                        headers: { 'Authorization': `Bearer ${token}` },
+                    }),
+                ]);
+                const levelsData = await levelsRes.json();
+                const progressData = await progressRes.json();
+
+                const completed = new Set(
+                    (Array.isArray(progressData) ? progressData : [])
+                        .filter(p => p.completed)
+                        .map(p => p.levelId)
+                );
+                setCompletedIds(completed);
+                setLevels(levelsData);
+
+                const firstUncompleted = levelsData.findIndex(l => !completed.has(l.id));
+                setLevelIndex(firstUncompleted >= 0 ? firstUncompleted : 0);
             } catch {
                 // sin niveles
             } finally {
                 setLevelLoading(false);
             }
         }
-        fetchLevels();
+        fetchData();
     }, []);
+
+    // Cerrar el nav si se hace click fuera
+    useEffect(() => {
+        if (!showLevelNav) return;
+        function handleOutsideClick(e) {
+            if (!e.target.closest('.level-nav')) setShowLevelNav(false);
+        }
+        document.addEventListener('mousedown', handleOutsideClick);
+        return () => document.removeEventListener('mousedown', handleOutsideClick);
+    }, [showLevelNav]);
+
+    function navigateToLevel(index) {
+        const target = levels[index];
+        setLevelIndex(index);
+        setPlayerAnswer(savedAnswers[target.id] || '');
+        setCheckResult(null);
+        setShowLevelNav(false);
+    }
+
+    function handleAnswerChange(value) {
+        setPlayerAnswer(value);
+        if (level) {
+            setSavedAnswers(prev => ({ ...prev, [level.id]: value }));
+        }
+    }
 
     function handleLanguageChange(lang) {
         setLanguage(lang);
@@ -110,11 +156,22 @@ function GameScreen({ onBack }) {
             });
             const data = await res.json();
             setCheckResult(data);
+            if (data.correct) {
+                setCompletedIds(prev => new Set([...prev, level.id]));
+            }
         } catch {
             setCheckResult({ correct: false, message: 'Error al conectar con el servidor.' });
         } finally {
             setCheckLoading(false);
         }
+    }
+
+    function handleNextLevel() {
+        const nextIndex = levelIndex + 1;
+        const nextLevel = levels[nextIndex];
+        setLevelIndex(nextIndex);
+        setPlayerAnswer(savedAnswers[nextLevel.id] || '');
+        setCheckResult(null);
     }
 
     function handleClear() {
@@ -124,18 +181,59 @@ function GameScreen({ onBack }) {
     }
 
     const hasOutput = output || stderr;
+    const completedCount = completedIds.size;
+    const totalCount = levels.length;
 
     return (
         <div className="game-screen">
             {/* ── Panel izquierdo: desafío ── */}
             <div className="challenge-panel">
                 {levelLoading ? (
-                    <p className="challenge-loading">Cargando nivel...</p>
+                    <p className="challenge-loading">Cargando niveles...</p>
                 ) : level ? (
                     <>
+                        {/* Navegador de niveles */}
+                        <div className="level-nav">
+                            <button
+                                className="level-nav-toggle"
+                                onClick={() => setShowLevelNav(v => !v)}
+                            >
+                                <span>
+                                    Nivel {level.levelNumber} de {totalCount}
+                                    {totalCount > 0 && (
+                                        <span className="level-nav-progress">
+                                            {' '}· {completedCount}/{totalCount} completados
+                                        </span>
+                                    )}
+                                </span>
+                                <span className="level-nav-arrow">{showLevelNav ? '▲' : '▼'}</span>
+                            </button>
+
+                            {showLevelNav && (
+                                <ul className="level-nav-list">
+                                    {levels.map((l, i) => {
+                                        const isCompleted = completedIds.has(l.id);
+                                        const isCurrent = i === levelIndex;
+                                        return (
+                                            <li
+                                                key={l.id}
+                                                className={`level-nav-item${isCurrent ? ' current' : ''}${isCompleted ? ' done' : ''}`}
+                                                onClick={() => navigateToLevel(i)}
+                                            >
+                                                <span className="level-nav-status">
+                                                    {isCompleted ? '✅' : isCurrent ? '▶' : '○'}
+                                                </span>
+                                                <span className="level-nav-num">#{l.levelNumber}</span>
+                                                <span className="level-nav-name">{l.title}</span>
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
+                            )}
+                        </div>
+
                         <div className="challenge-header">
                             <span className="challenge-level">Nivel {level.levelNumber}</span>
-                            {/*<span className="challenge-lang">{level.language}</span>*/}
                         </div>
                         <h2 className="challenge-title">{level.title}</h2>
                         {level.description && (
@@ -151,10 +249,7 @@ function GameScreen({ onBack }) {
                                 type="text"
                                 placeholder="Escribí el resultado..."
                                 value={playerAnswer}
-                                onChange={e => {
-                                    setPlayerAnswer(e.target.value);
-                                    setCheckResult(null);
-                                }}
+                                onChange={e => handleAnswerChange(e.target.value)}
                                 onKeyDown={e => e.key === 'Enter' && handleCheckAnswer()}
                             />
                             <button
@@ -173,14 +268,7 @@ function GameScreen({ onBack }) {
                                 </div>
                             )}
                             {checkResult?.correct && !isLastLevel && (
-                                <button
-                                    className="next-btn"
-                                    onClick={() => {
-                                        setLevelIndex(i => i + 1);
-                                        setPlayerAnswer('');
-                                        setCheckResult(null);
-                                    }}
-                                >
+                                <button className="next-btn" onClick={handleNextLevel}>
                                     Siguiente nivel →
                                 </button>
                             )}

@@ -1,0 +1,375 @@
+.profile-screen {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: 'Courier New', monospace;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* ── Header ── */
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background: white;
+    border: 2px solid #FF69B4;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 4px 4px 0 #FFC0CB;
+}
+
+.profile-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FF69B4, #FFC0CB);
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 3px solid #FF69B4;
+}
+
+.profile-identity {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.profile-username {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #FF69B4;
+    letter-spacing: 1px;
+}
+
+.profile-email {
+    margin: 0;
+    color: #888;
+    font-size: 0.9rem;
+}
+
+.profile-since {
+    margin: 0;
+    color: #bbb;
+    font-size: 0.8rem;
+}
+
+/* ── Stats ── */
+.profile-stats {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    flex: 1;
+    min-width: 120px;
+    background: white;
+    border: 2px solid #FFC0CB;
+    border-radius: 14px;
+    padding: 1rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    box-shadow: 3px 3px 0 #FFC0CB;
+    text-align: center;
+}
+
+.stat-icon {
+    font-size: 1.5rem;
+}
+
+.stat-value {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #FF69B4;
+}
+
+.stat-label {
+    font-size: 0.72rem;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ── Progreso ── */
+.profile-section-title {
+    color: #FF69B4;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 1rem;
+}
+
+.profile-progress {
+    background: white;
+    border: 2px solid #FFC0CB;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 4px 4px 0 #FFC0CB;
+}
+
+.profile-empty {
+    color: #aaa;
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+.progress-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.progress-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #FFF5E1;
+    border: 2px solid #FFC0CB;
+    border-radius: 10px;
+    padding: 0.7rem 1rem;
+    gap: 1rem;
+}
+
+.progress-item-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+}
+
+.progress-level-num {
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: #FF69B4;
+    text-transform: uppercase;
+}
+
+.progress-level-title {
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.progress-group {
+    font-size: 0.75rem;
+    color: #aaa;
+}
+
+.progress-item-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.15rem;
+    flex-shrink: 0;
+}
+
+.progress-xp {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #FF69B4;
+}
+
+.progress-attempts {
+    font-size: 0.75rem;
+    color: #888;
+}
+
+.progress-date {
+    font-size: 0.7rem;
+    color: #bbb;
+}
+
+/* ── Misc ── */
+.profile-loading,
+.profile-error {
+    text-align: center;
+    padding: 3rem;
+    color: #aaa;
+    font-family: 'Courier New', monospace;
+}
+
+.profile-error {
+    color: #cc0000;
+}
+
+/* ── Admin Stats ── */
+.admin-stats-screen {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: 'Courier New', monospace;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.admin-stats-title {
+    color: #FF69B4;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.admin-summary {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.summary-card {
+    flex: 1;
+    min-width: 140px;
+    background: white;
+    border: 2px solid #FFC0CB;
+    border-radius: 14px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    box-shadow: 3px 3px 0 #FFC0CB;
+}
+
+.summary-value {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #FF69B4;
+}
+
+.summary-label {
+    font-size: 0.72rem;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+}
+
+.admin-search {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    padding: 0.6rem 0.9rem;
+    border: 2px solid #FFC0CB;
+    border-radius: 10px;
+    outline: none;
+    background: #FFF5E1;
+    transition: border-color 0.2s;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.admin-search:focus {
+    border-color: #FF69B4;
+}
+
+.admin-table-wrapper {
+    overflow-x: auto;
+    border: 2px solid #FFC0CB;
+    border-radius: 14px;
+    box-shadow: 4px 4px 0 #FFC0CB;
+    background: white;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.admin-table thead {
+    background: linear-gradient(90deg, #FF69B4, #FFC0CB);
+    color: white;
+}
+
+.admin-table th {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: bold;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+}
+
+.admin-table th:hover {
+    background: rgba(255,255,255,0.15);
+}
+
+.admin-table td {
+    padding: 0.65rem 1rem;
+    border-bottom: 1px solid #FFF0F5;
+    color: #444;
+    vertical-align: middle;
+}
+
+.admin-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-table tbody tr:hover td {
+    background: #FFF5E1;
+}
+
+.sort-icon {
+    font-size: 0.75rem;
+    margin-left: 0.25rem;
+}
+
+.sort-icon.inactive {
+    opacity: 0.4;
+}
+
+.table-user {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.table-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FF69B4, #FFC0CB);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.table-email {
+    color: #888;
+    font-size: 0.8rem;
+}
+
+.table-xp {
+    color: #FF69B4;
+    font-weight: bold;
+}
+
+.table-date {
+    color: #aaa;
+    font-size: 0.8rem;
+}
+
+.admin-table-empty {
+    text-align: center;
+    color: #aaa;
+    padding: 2rem;
+}
