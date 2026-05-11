@@ -17,12 +17,17 @@ function AdminScreen() {
     const [form, setForm] = useState(EMPTY_FORM);
     const [levelGroups, setLevelGroups] = useState([]);
     const [levels, setLevels] = useState([]);
+    const [editingId, setEditingId] = useState(null);
     const [loading, setLoading] = useState(false);
     const [groupsLoading, setGroupsLoading] = useState(true);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
     const token = localStorage.getItem('token');
+
+    const nextLevelNumber = levels.length > 0
+        ? Math.max(...levels.map(l => l.levelNumber)) + 1
+        : 1;
 
     useEffect(() => {
         async function fetchData() {
@@ -39,7 +44,12 @@ function AdminScreen() {
                 const groupsData = await groupsRes.json();
                 const levelsData = await levelsRes.json();
                 setLevelGroups(Array.isArray(groupsData) ? groupsData : []);
-                setLevels(Array.isArray(levelsData) ? levelsData : []);
+                const levelsArray = Array.isArray(levelsData) ? levelsData : [];
+                setLevels(levelsArray);
+                if (levelsArray.length > 0) {
+                    const max = Math.max(...levelsArray.map(l => l.levelNumber));
+                    setForm(f => ({ ...f, levelNumber: max + 1 }));
+                }
             } catch {
                 setError('Error al cargar datos.');
             } finally {
@@ -56,30 +66,69 @@ function AdminScreen() {
         setSuccess('');
     }
 
+    function handleEdit(level) {
+        setEditingId(level.id);
+        setForm({
+            levelNumber: level.levelNumber,
+            title: level.title,
+            description: level.description || '',
+            challengeContent: level.challengeContent || '',
+            expectedOutput: level.expectedOutput || '',
+            xpReward: level.xpReward,
+            levelGroupId: level.levelGroupId || '',
+        });
+        setError('');
+        setSuccess('');
+    }
+
+    function handleCancelEdit() {
+        setEditingId(null);
+        setForm({ ...EMPTY_FORM, levelNumber: nextLevelNumber });
+        setError('');
+        setSuccess('');
+    }
+
     async function handleSubmit(e) {
         e.preventDefault();
         setError('');
         setSuccess('');
         setLoading(true);
         try {
-            const res = await fetch(`${API_URL}/api/levels`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    ...form,
-                    levelNumber: Number(form.levelNumber),
-                    xpReward: Number(form.xpReward),
-                    levelGroupId: Number(form.levelGroupId),
-                }),
+            const body = JSON.stringify({
+                ...form,
+                levelNumber: Number(form.levelNumber),
+                xpReward: Number(form.xpReward),
+                levelGroupId: Number(form.levelGroupId),
             });
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.message || 'Error al crear nivel');
-            setSuccess(`Nivel "${data.title}" creado exitosamente.`);
-            setLevels(prev => [...prev, data]);
-            setForm(EMPTY_FORM);
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            };
+
+            if (editingId) {
+                const res = await fetch(`${API_URL}/api/levels/${editingId}`, {
+                    method: 'PUT',
+                    headers,
+                    body,
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || 'Error al editar nivel');
+                setSuccess(`Nivel "${data.title}" actualizado exitosamente.`);
+                setLevels(prev => prev.map(l => l.id === editingId ? data : l));
+                setEditingId(null);
+                setForm({ ...EMPTY_FORM, levelNumber: nextLevelNumber });
+            } else {
+                const res = await fetch(`${API_URL}/api/levels`, {
+                    method: 'POST',
+                    headers,
+                    body,
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || 'Error al crear nivel');
+                setSuccess(`Nivel "${data.title}" creado exitosamente.`);
+                setLevels(prev => [...prev, data]);
+                setForm({ ...EMPTY_FORM, levelNumber: data.levelNumber + 1 });
+            }
         } catch (err) {
             setError(err.message);
         } finally {
@@ -96,6 +145,7 @@ function AdminScreen() {
             });
             if (!res.ok) throw new Error('Error al eliminar');
             setLevels(prev => prev.filter(l => l.id !== id));
+            if (editingId === id) handleCancelEdit();
         } catch (err) {
             setError(err.message);
         }
@@ -104,7 +154,7 @@ function AdminScreen() {
     return (
         <div className="admin-screen">
             <div className="admin-left">
-                <h2 className="admin-title">Crear nivel</h2>
+                <h2 className="admin-title">{editingId ? 'Editar nivel' : 'Crear nivel'}</h2>
 
                 {error && <p className="admin-error">{error}</p>}
                 {success && <p className="admin-success">{success}</p>}
@@ -121,7 +171,6 @@ function AdminScreen() {
                                     name="levelNumber"
                                     value={form.levelNumber}
                                     onChange={handleChange}
-                                    placeholder="1"
                                     min="1"
                                     required
                                 />
@@ -203,9 +252,18 @@ function AdminScreen() {
                             </select>
                         </div>
 
-                        <button type="submit" className="admin-submit" disabled={loading}>
-                            {loading ? 'Creando...' : '+ Crear nivel'}
-                        </button>
+                        <div className="admin-form-actions">
+                            <button type="submit" className="admin-submit" disabled={loading}>
+                                {loading
+                                    ? (editingId ? 'Guardando...' : 'Creando...')
+                                    : (editingId ? '✓ Guardar cambios' : '+ Crear nivel')}
+                            </button>
+                            {editingId && (
+                                <button type="button" className="admin-cancel-btn" onClick={handleCancelEdit}>
+                                    Cancelar
+                                </button>
+                            )}
+                        </div>
                     </form>
                 )}
             </div>
@@ -220,18 +278,29 @@ function AdminScreen() {
                             .slice()
                             .sort((a, b) => a.levelNumber - b.levelNumber)
                             .map(level => (
-                                <li key={level.id} className="admin-level-item">
+                                <li
+                                    key={level.id}
+                                    className={`admin-level-item${editingId === level.id ? ' admin-level-item--editing' : ''}`}
+                                >
                                     <div className="admin-level-info">
                                         <span className="admin-level-num">#{level.levelNumber}</span>
                                         <span className="admin-level-title">{level.title}</span>
                                         <span className="admin-level-group">{level.levelGroupName}</span>
                                     </div>
-                                    <button
-                                        className="admin-delete-btn"
-                                        onClick={() => handleDelete(level.id)}
-                                    >
-                                        Eliminar
-                                    </button>
+                                    <div className="admin-level-actions">
+                                        <button
+                                            className="admin-edit-btn"
+                                            onClick={() => handleEdit(level)}
+                                        >
+                                            Editar
+                                        </button>
+                                        <button
+                                            className="admin-delete-btn"
+                                            onClick={() => handleDelete(level.id)}
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </div>
                                 </li>
                             ))}
                     </ul>
