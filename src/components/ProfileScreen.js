@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './ProfileScreen.css';
+import {FaBullseye, FaCheckCircle, FaFire, FaStar, FaTrophy} from "react-icons/fa";
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8081';
 
@@ -52,27 +53,27 @@ function PlayerProfile({ token }) {
 
             <div className="profile-stats">
                 <div className="stat-card">
-                    <span className="stat-icon">⭐</span>
+                    <FaStar size={24} />
                     <span className="stat-value">{profile.totalXp}</span>
                     <span className="stat-label">XP total</span>
                 </div>
                 <div className="stat-card">
-                    <span className="stat-icon">🔥</span>
+                    <FaFire size={24} />
                     <span className="stat-value">{profile.currentStreak}</span>
                     <span className="stat-label">Racha actual</span>
                 </div>
                 <div className="stat-card">
-                    <span className="stat-icon">🏆</span>
+                    <FaTrophy size={24} />
                     <span className="stat-value">{profile.longestStreak}</span>
                     <span className="stat-label">Mejor racha</span>
                 </div>
                 <div className="stat-card">
-                    <span className="stat-icon">✅</span>
+                    <FaCheckCircle size={24} />
                     <span className="stat-value">{completed.length}</span>
                     <span className="stat-label">Niveles completados</span>
                 </div>
                 <div className="stat-card">
-                    <span className="stat-icon">🎯</span>
+                    <FaBullseye className="stat-icon" size={20} />
                     <span className="stat-value">{totalAttempts}</span>
                     <span className="stat-label">Intentos totales</span>
                 </div>
@@ -227,13 +228,13 @@ function AdminStats({ token }) {
                             XP <SortIcon col="totalXp" />
                         </th>
                         <th onClick={() => toggleSort('currentStreak')}>
-                            Racha 🔥 <SortIcon col="currentStreak" />
+                            Racha <FaFire size={13} /> <SortIcon col="currentStreak" />
                         </th>
                         <th onClick={() => toggleSort('longestStreak')}>
                             Mejor racha <SortIcon col="longestStreak" />
                         </th>
                         <th onClick={() => toggleSort('completedLevels')}>
-                            Niveles ✅ <SortIcon col="completedLevels" />
+                            Niveles <FaCheckCircle size={13} /> <SortIcon col="completedLevels" />
                         </th>
                         <th onClick={() => toggleSort('createdAt')}>
                             Miembro desde <SortIcon col="createdAt" />

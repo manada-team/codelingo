@@ -1,0 +1,168 @@
+.home-screen {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 1.5rem 1.2rem;
+
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 2.5rem;
+
+    align-items: start;
+}
+
+.home-left {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.home-welcome {
+    font-size: 1.9rem;
+    margin: 0;
+    color: #ff5eb7;
+}
+
+.home-start-btn {
+    align-self: flex-start;
+
+    padding: 0.6rem 1.2rem;
+
+    border: 2px solid currentColor;
+    background: transparent;
+
+    font-size: 0.9rem;
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.home-start-btn:hover {
+    transform: translateY(-2px);
+}
+
+.home-right-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+}
+
+.home-card {
+    border: 2px solid currentColor;
+    background: rgba(255,255,255,0.04);
+}
+
+.fact-card {
+    padding: 1.1rem;
+
+    min-height: 115px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+}
+
+.home-card-fact-title {
+    font-size: 0.68rem;
+
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+
+    opacity: 0.5;
+
+    margin-bottom: 0.5rem;
+}
+
+.home-card-fact {
+    margin: 0;
+
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+.home-stats-grid-right {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 0.7rem;
+}
+
+.home-stat {
+    border: 2px solid currentColor;
+
+    min-height: 115px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    gap: 0.35rem;
+
+    transition: 0.2s ease;
+}
+
+.home-stat:hover {
+    transform: translateY(-2px);
+}
+
+.home-stat svg {
+    font-size: 1.3rem;
+}
+
+.home-stat-value {
+    font-size: 1.35rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.home-stat-label {
+    font-size: 0.65rem;
+
+    opacity: 0.55;
+
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+
+    max-width: 90px;
+}
+
+@media (max-width: 950px) {
+
+    .home-screen {
+        grid-template-columns: 1fr;
+        gap: 1.8rem;
+    }
+
+    .home-right-col {
+        width: 100%;
+    }
+
+    .home-welcome {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .home-screen {
+        padding: 1.2rem 0.8rem;
+    }
+
+    .home-stats-grid-right {
+        grid-template-columns: 1fr;
+    }
+
+    .home-stat {
+        min-height: 100px;
+    }
+
+    .fact-card {
+        min-height: auto;
+    }
+}
