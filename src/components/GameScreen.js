@@ -141,7 +141,9 @@ function GameScreen({ onBack }) {
     }
 
     async function handleCheckAnswer() {
-        if (!level || !playerAnswer.trim()) return;
+        if (!level || !playerAnswer.trim() || checkResult?.correct) return;
+
+        // if (!level || !playerAnswer.trim()) return;
         setCheckLoading(true);
         setCheckResult(null);
         const token = localStorage.getItem('token');
@@ -249,13 +251,14 @@ function GameScreen({ onBack }) {
                                 type="text"
                                 placeholder="Escribí el resultado..."
                                 value={playerAnswer}
+                                readOnly={!!checkResult?.correct}
                                 onChange={e => handleAnswerChange(e.target.value)}
                                 onKeyDown={e => e.key === 'Enter' && handleCheckAnswer()}
                             />
                             <button
                                 className="answer-btn"
                                 onClick={handleCheckAnswer}
-                                disabled={checkLoading || !playerAnswer.trim()}
+                                disabled={checkLoading || !playerAnswer.trim() || !!checkResult?.correct}
                             >
                                 {checkLoading ? 'Verificando...' : 'Enviar'}
                             </button>

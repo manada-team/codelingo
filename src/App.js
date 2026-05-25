@@ -5,6 +5,7 @@ import GameScreen from './components/GameScreen';
 import AdminScreen from './components/AdminScreen';
 import './components/GameScreen.css';
 import ProfileScreen from './components/ProfileScreen';
+import HomeScreen from "./components/HomeScreen";
 
 function App() {
     const [user, setUser] = useState(() => {
@@ -56,11 +57,7 @@ function App() {
             </header>
             <main className={`retro-main${screen === 'game' ? ' game-mode' : ''}`}>
                 {screen === 'home' && (
-                    <section>
-                        <h2>Bienvenido a CODELINGO</h2>
-                        <p>Resuelve desafíos con programación.</p>
-                        <button onClick={() => setScreen('game')}>Comenzar</button>
-                    </section>
+                    <HomeScreen user={user} onStartGame={() => setScreen('game')} />
                 )}
                 {screen === 'game' && (
                     <GameScreen onBack={() => setScreen('home')} />

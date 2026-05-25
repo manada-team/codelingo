@@ -44,7 +44,7 @@ function AuthScreen({ onAuthSuccess }) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(registerForm),
             });
-            const data = await res.json();
+            const data = await res.json().catch(() => ({}));
             if (!res.ok) throw new Error(data.message || 'Error al registrarse');
             setTab('login');
             setLoginForm({ username: registerForm.username, password: '' });
