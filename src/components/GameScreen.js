@@ -22,9 +22,9 @@ const LANGUAGES = {
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8081';
 
-function GameScreen({ onBack }) {
+function GameScreen({ onBack, activeLanguage }) {
     const codeRef = useRef(LANGUAGES.python.defaultCode);
-    const [language, setLanguage] = useState('python');
+    // const [language, setLanguage] = useState('python');
     const [output, setOutput] = useState('');
     const [stderr, setStderr] = useState('');
     const [loading, setLoading] = useState(false);
@@ -39,6 +39,7 @@ function GameScreen({ onBack }) {
     const [checkResult, setCheckResult] = useState(null);
     const [checkLoading, setCheckLoading] = useState(false);
     const [showLevelNav, setShowLevelNav] = useState(false);
+    const [language, setLanguage] = useState(activeLanguage || 'python');
 
     const level = levels[levelIndex] || null;
     const isLastLevel = levelIndex === levels.length - 1;
@@ -289,15 +290,17 @@ function GameScreen({ onBack }) {
             <div className="playground-panel">
                 <div className="game-toolbar">
                     <div className="lang-tabs">
-                        {Object.entries(LANGUAGES).map(([key, { label }]) => (
-                            <button
-                                key={key}
-                                className={`lang-tab${language === key ? ' active' : ''}`}
-                                onClick={() => handleLanguageChange(key)}
-                            >
-                                {label}
-                            </button>
-                        ))}
+                        {Object.entries(LANGUAGES)
+                            .filter(([key]) => !activeLanguage || key === activeLanguage)
+                            .map(([key, { label }]) => (
+                                <button
+                                    key={key}
+                                    className={`lang-tab${language === key ? ' active' : ''}`}
+                                    onClick={() => handleLanguageChange(key)}
+                                >
+                                    {label}
+                                </button>
+                            ))}
                     </div>
                     <div className="game-actions">
                         {timeMs !== null && <span className="exec-time">{timeMs}ms</span>}

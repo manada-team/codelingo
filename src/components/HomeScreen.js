@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
 import './HomeScreen.css';
-import {FaCheckCircle, FaFire, FaStar, FaTrophy} from "react-icons/fa";
+import { FaCheckCircle, FaFire, FaStar, FaTrophy } from "react-icons/fa";
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8081';
 
-function HomeScreen({ user, onStartGame }) {
+const LANGUAGE_LABELS = { python: 'Python', java: 'Java', c: 'C' };
+
+function HomeScreen({ user, onStartGame, onLanguageChange }) {
     const [profile, setProfile] = useState(null);
     const [recentLevel, setRecentLevel] = useState(null);
     const [funFact, setFunFact] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [langLoading, setLangLoading] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -25,22 +29,83 @@ function HomeScreen({ user, onStartGame }) {
                 setProfile(profileData);
                 setFunFact(factData.content || '');
 
+                if (profileData.activeLanguage) {
+                    onLanguageChange(profileData.activeLanguage);
+                }
+
                 const completed = Array.isArray(progressData) ? progressData.filter(p => p.completed) : [];
                 if (completed.length > 0) {
                     const recent = [...completed].sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt))[0];
                     setRecentLevel(recent);
                 }
             } catch { /* mostramos lo que tengamos */ }
+            finally {
+                setLoading(false);
+            }
         }
         fetchData();
     }, []);
 
+    async function handleSelectLanguage(lang) {
+        if (langLoading) return;
+        setLangLoading(true);
+        const token = localStorage.getItem('token');
+        try {
+            await fetch(`${API_URL}/api/users/me/language`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify({ language: lang }),
+            });
+            onLanguageChange(lang);
+            setProfile(prev => ({ ...prev, activeLanguage: lang }));
+        } finally {
+            setLangLoading(false);
+        }
+    }
+
+    if (loading) return null;
+
+    const activeLang = profile?.activeLanguage || user.activeLanguage;
+
     return (
         <div className="home-screen">
-
             <div className="home-left">
                 <h2 className="home-welcome">Bienvenido, {user.username}!</h2>
-                <button className="home-start-btn" onClick={onStartGame}>
+
+                <div className="home-lang-section">
+                    <span className="home-lang-label">Racha activa:</span>
+                    {activeLang ? (
+                        <div className="home-lang-locked">
+                            <span className="home-lang-tab active">{LANGUAGE_LABELS[activeLang]}</span>
+                        </div>
+                    ) : (
+                        <div className="home-lang-tabs">
+                            {Object.entries(LANGUAGE_LABELS).map(([key, label]) => (
+                                <button
+                                    key={key}
+                                    className="home-lang-tab"
+                                    onClick={() => handleSelectLanguage(key)}
+                                    disabled={langLoading}
+                                >
+                                    {label}
+                                </button>
+                            ))}
+                        </div>
+                    )}
+                    {!activeLang && (
+                        <span className="home-lang-hint">Elegí tu lenguaje para comenzar. Esta elección es permanente.</span>
+                    )}
+                </div>
+
+                <button
+                    className="home-start-btn"
+                    onClick={onStartGame}
+                    disabled={!activeLang}
+                    title={!activeLang ? 'Seleccioná un lenguaje primero' : ''}
+                >
                     Comenzar a jugar →
                 </button>
             </div>
@@ -62,8 +127,8 @@ function HomeScreen({ user, onStartGame }) {
                         <FaFire size={20} />
                         <span className="home-stat-value">{profile?.currentStreak ?? 0}</span>
                         <span className="home-stat-label">
-            {profile?.currentStreak === 1 ? 'día de racha' : 'días de racha'}
-        </span>
+                            {profile?.currentStreak === 1 ? 'día de racha' : 'días de racha'}
+                        </span>
                     </div>
                     <div className="home-stat">
                         <FaCheckCircle size={20} />
@@ -79,7 +144,6 @@ function HomeScreen({ user, onStartGame }) {
                     )}
                 </div>
             </div>
-
         </div>
     );
 }
