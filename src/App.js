@@ -7,26 +7,35 @@ import './components/GameScreen.css';
 import ProfileScreen from './components/ProfileScreen';
 import HomeScreen from "./components/HomeScreen";
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8081';
+
 function App() {
     const [user, setUser] = useState(() => {
         const token = localStorage.getItem('token');
         const username = localStorage.getItem('username');
         const role = localStorage.getItem('role');
-        return token ? { token, username, role } : null;
+        const activeLanguage = localStorage.getItem('activeLanguage') || null;
+        return token ? { token, username, role, activeLanguage } : null;
     });
     const [screen, setScreen] = useState('home');
 
     function handleAuthSuccess(data) {
         localStorage.setItem('role', data.role);
-        setUser({ token: data.token, username: data.username, role: data.role });
+        setUser({ token: data.token, username: data.username, role: data.role, activeLanguage: null });
     }
 
     function handleLogout() {
         localStorage.removeItem('token');
         localStorage.removeItem('username');
         localStorage.removeItem('role');
+        localStorage.removeItem('activeLanguage');
         setUser(null);
         setScreen('home');
+    }
+
+    function handleLanguageChange(lang) {
+        localStorage.setItem('activeLanguage', lang);
+        setUser(prev => ({ ...prev, activeLanguage: lang }));
     }
 
     if (!user) {
@@ -57,10 +66,17 @@ function App() {
             </header>
             <main className={`retro-main${screen === 'game' ? ' game-mode' : ''}`}>
                 {screen === 'home' && (
-                    <HomeScreen user={user} onStartGame={() => setScreen('game')} />
+                    <HomeScreen
+                        user={user}
+                        onStartGame={() => setScreen('game')}
+                        onLanguageChange={handleLanguageChange}
+                    />
                 )}
                 {screen === 'game' && (
-                    <GameScreen onBack={() => setScreen('home')} />
+                    <GameScreen
+                        onBack={() => setScreen('home')}
+                        activeLanguage={user.activeLanguage}
+                    />
                 )}
                 {screen === 'admin' && isAdmin && (
                     <AdminScreen />

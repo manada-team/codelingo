@@ -79,6 +79,29 @@ function PlayerProfile({ token }) {
                 </div>
             </div>
 
+            <div className="profile-lang-xp">
+                <h3 className="profile-section-title">XP por lenguaje</h3>
+                <div className="profile-stats">
+                    <div className="stat-card">
+                        <span className="stat-value">{profile.xpPython ?? 0}</span>
+                        <span className="stat-label">XP Python</span>
+                    </div>
+                    <div className="stat-card">
+                        <span className="stat-value">{profile.xpJava ?? 0}</span>
+                        <span className="stat-label">XP Java</span>
+                    </div>
+                    <div className="stat-card">
+                        <span className="stat-value">{profile.xpC ?? 0}</span>
+                        <span className="stat-label">XP C</span>
+                    </div>
+                    <div className="stat-card">
+                        <FaStar size={24} />
+                        <span className="stat-value">{(profile.xpPython ?? 0) + (profile.xpJava ?? 0) + (profile.xpC ?? 0)}</span>
+                        <span className="stat-label">XP global</span>
+                    </div>
+                </div>
+            </div>
+
             <div className="profile-progress">
                 <h3 className="profile-section-title">Historial de niveles</h3>
                 {completed.length === 0 ? (
@@ -227,6 +250,16 @@ function AdminStats({ token }) {
                         <th onClick={() => toggleSort('totalXp')}>
                             XP <SortIcon col="totalXp" />
                         </th>
+                        <th onClick={() => toggleSort('xpPython')}>
+                            Python XP <SortIcon col="xpPython" />
+                        </th>
+                        <th onClick={() => toggleSort('xpJava')}>
+                            Java XP <SortIcon col="xpJava" />
+                        </th>
+                        <th onClick={() => toggleSort('xpC')}>
+                            C XP <SortIcon col="xpC" />
+                        </th>
+                        <th>Racha lang.</th>
                         <th onClick={() => toggleSort('currentStreak')}>
                             Racha <FaFire size={13} /> <SortIcon col="currentStreak" />
                         </th>
@@ -245,7 +278,7 @@ function AdminStats({ token }) {
                     <tbody>
                     {filtered.length === 0 ? (
                         <tr>
-                            <td colSpan={8} className="admin-table-empty">
+                            <td colSpan={12} className="admin-table-empty">
                                 Sin resultados.
                             </td>
                         </tr>
@@ -262,6 +295,10 @@ function AdminStats({ token }) {
                                 </td>
                                 <td className="table-email">{u.email}</td>
                                 <td className="table-xp">{u.totalXp}</td>
+                                <td>{u.xpPython ?? 0}</td>
+                                <td>{u.xpJava ?? 0}</td>
+                                <td>{u.xpC ?? 0}</td>
+                                <td>{u.activeLanguage || '—'}</td>
                                 <td>{u.currentStreak}</td>
                                 <td>{u.longestStreak}</td>
                                 <td>{u.completedLevels}</td>
