@@ -6,9 +6,6 @@ import AdminScreen from './components/AdminScreen';
 import './components/GameScreen.css';
 import ProfileScreen from './components/ProfileScreen';
 import HomeScreen from "./components/HomeScreen";
-
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8081';
-
 function App() {
     const [user, setUser] = useState(() => {
         const token = localStorage.getItem('token');
