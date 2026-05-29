@@ -278,7 +278,7 @@ function AdminStats({ token }) {
                     <tbody>
                     {filtered.length === 0 ? (
                         <tr>
-                            <td colSpan={8} className="admin-table-empty">
+                            <td colSpan={12} className="admin-table-empty">
                                 Sin resultados.
                             </td>
                         </tr>

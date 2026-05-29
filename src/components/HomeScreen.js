@@ -4,7 +4,11 @@ import { FaCheckCircle, FaFire, FaStar, FaTrophy } from "react-icons/fa";
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8081';
 
-const LANGUAGE_LABELS = { python: 'Python', java: 'Java', c: 'C' };
+const LANGUAGE_INFO = {
+    python: { label: 'Python', icon: '🐍' },
+    java:   { label: 'Java',   icon: '☕' },
+    c:      { label: 'C',      icon: '⚙️' },
+};
 
 function HomeScreen({ user, onStartGame, onLanguageChange }) {
     const [profile, setProfile] = useState(null);
@@ -38,7 +42,7 @@ function HomeScreen({ user, onStartGame, onLanguageChange }) {
                     const recent = [...completed].sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt))[0];
                     setRecentLevel(recent);
                 }
-            } catch { /* mostramos lo que tengamos */ }
+            } catch { }
             finally {
                 setLoading(false);
             }
@@ -51,7 +55,7 @@ function HomeScreen({ user, onStartGame, onLanguageChange }) {
         setLangLoading(true);
         const token = localStorage.getItem('token');
         try {
-            await fetch(`${API_URL}/api/users/me/language`, {
+            const res = await fetch(`${API_URL}/api/users/me/language`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -59,55 +63,57 @@ function HomeScreen({ user, onStartGame, onLanguageChange }) {
                 },
                 body: JSON.stringify({ language: lang }),
             });
+            const data = await res.json();
+            const newStarted = data.startedLanguages || [];
             onLanguageChange(lang);
-            setProfile(prev => ({ ...prev, activeLanguage: lang }));
+            setProfile(prev => ({
+                ...prev,
+                activeLanguage: lang,
+                startedLanguages: newStarted,
+            }));
         } finally {
             setLangLoading(false);
         }
+        onStartGame();
     }
 
     if (loading) return null;
 
-    const activeLang = profile?.activeLanguage || user.activeLanguage;
+    const activeLang = profile?.activeLanguage || user.activeLanguage || '';
+    const startedLangs = profile?.startedLanguages || [];
+
+    const xpByLang = {
+        python: profile?.xpPython ?? 0,
+        java:   profile?.xpJava   ?? 0,
+        c:      profile?.xpC      ?? 0,
+    };
 
     return (
         <div className="home-screen">
             <div className="home-left">
                 <h2 className="home-welcome">Bienvenido, {user.username}!</h2>
 
-                <div className="home-lang-section">
-                    <span className="home-lang-label">Racha activa:</span>
-                    {activeLang ? (
-                        <div className="home-lang-locked">
-                            <span className="home-lang-tab active">{LANGUAGE_LABELS[activeLang]}</span>
-                        </div>
-                    ) : (
-                        <div className="home-lang-tabs">
-                            {Object.entries(LANGUAGE_LABELS).map(([key, label]) => (
-                                <button
-                                    key={key}
-                                    className="home-lang-tab"
-                                    onClick={() => handleSelectLanguage(key)}
-                                    disabled={langLoading}
-                                >
-                                    {label}
-                                </button>
-                            ))}
-                        </div>
-                    )}
-                    {!activeLang && (
-                        <span className="home-lang-hint">Elegí tu lenguaje para comenzar. Esta elección es permanente.</span>
-                    )}
+                <div className="home-lang-cards">
+                    {Object.entries(LANGUAGE_INFO).map(([key, { label, icon }]) => {
+                        const isStarted = startedLangs.includes(key);
+                        const isSelected = activeLang === key;
+                        return (
+                            <button
+                                key={key}
+                                className={`home-lang-card${isSelected ? ' selected' : ''}${!isStarted ? ' not-started' : ''}`}
+                                onClick={() => handleSelectLanguage(key)}
+                                disabled={langLoading}
+                            >
+                                <span className="home-lang-card-icon">{icon}</span>
+                                <span className="home-lang-card-name">{label}</span>
+                                <span className="home-lang-card-xp">
+                                    {isStarted ? `${xpByLang[key]} XP` : 'Iniciar racha'}
+                                </span>
+                                {isSelected && <span className="home-lang-card-playing">jugando</span>}
+                            </button>
+                        );
+                    })}
                 </div>
-
-                <button
-                    className="home-start-btn"
-                    onClick={onStartGame}
-                    disabled={!activeLang}
-                    title={!activeLang ? 'Seleccioná un lenguaje primero' : ''}
-                >
-                    Comenzar a jugar →
-                </button>
             </div>
 
             <div className="home-right-col">

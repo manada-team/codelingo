@@ -23,8 +23,9 @@ const LANGUAGES = {
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8081';
 
 function GameScreen({ onBack, activeLanguage }) {
-    const codeRef = useRef(LANGUAGES.python.defaultCode);
-    // const [language, setLanguage] = useState('python');
+    const lang = activeLanguage || 'python';
+    const codeRef = useRef(LANGUAGES[lang].defaultCode);
+    const [language, setLanguage] = useState(lang);
     const [output, setOutput] = useState('');
     const [stderr, setStderr] = useState('');
     const [loading, setLoading] = useState(false);
@@ -39,7 +40,6 @@ function GameScreen({ onBack, activeLanguage }) {
     const [checkResult, setCheckResult] = useState(null);
     const [checkLoading, setCheckLoading] = useState(false);
     const [showLevelNav, setShowLevelNav] = useState(false);
-    const [language, setLanguage] = useState(activeLanguage || 'python');
 
     const level = levels[levelIndex] || null;
     const isLastLevel = levelIndex === levels.length - 1;
@@ -79,7 +79,6 @@ function GameScreen({ onBack, activeLanguage }) {
         fetchData();
     }, []);
 
-    // Cerrar el nav si se hace click fuera
     useEffect(() => {
         if (!showLevelNav) return;
         function handleOutsideClick(e) {
@@ -104,8 +103,8 @@ function GameScreen({ onBack, activeLanguage }) {
         }
     }
 
-    function handleLanguageChange(lang) {
-        setLanguage(lang);
+    function handleLanguageChange(l) {
+        setLanguage(l);
         setOutput('');
         setStderr('');
         setTimeMs(null);
@@ -143,8 +142,6 @@ function GameScreen({ onBack, activeLanguage }) {
 
     async function handleCheckAnswer() {
         if (!level || !playerAnswer.trim() || checkResult?.correct) return;
-
-        // if (!level || !playerAnswer.trim()) return;
         setCheckLoading(true);
         setCheckResult(null);
         const token = localStorage.getItem('token');
@@ -157,6 +154,10 @@ function GameScreen({ onBack, activeLanguage }) {
                 },
                 body: JSON.stringify({ answer: playerAnswer }),
             });
+            if (!res.ok) {
+                setCheckResult({ correct: false, message: 'Error al verificar la respuesta. Intentá de nuevo.' });
+                return;
+            }
             const data = await res.json();
             setCheckResult(data);
             if (data.correct) {
@@ -189,13 +190,11 @@ function GameScreen({ onBack, activeLanguage }) {
 
     return (
         <div className="game-screen">
-            {/* ── Panel izquierdo: desafío ── */}
             <div className="challenge-panel">
                 {levelLoading ? (
                     <p className="challenge-loading">Cargando niveles...</p>
                 ) : level ? (
                     <>
-                        {/* Navegador de niveles */}
                         <div className="level-nav">
                             <button
                                 className="level-nav-toggle"
@@ -286,7 +285,6 @@ function GameScreen({ onBack, activeLanguage }) {
                 )}
             </div>
 
-            {/* ── Panel derecho: playground ── */}
             <div className="playground-panel">
                 <div className="game-toolbar">
                     <div className="lang-tabs">
