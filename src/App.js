@@ -1,13 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import AuthScreen from './components/AuthScreen';
 import GameScreen from './components/GameScreen';
 import AdminScreen from './components/AdminScreen';
 import './components/GameScreen.css';
 import ProfileScreen from './components/ProfileScreen';
-import HomeScreen from "./components/HomeScreen";
+import HomeScreen from './components/HomeScreen';
+import ThemeSelector from './components/ThemeSelector';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8081';
+
+function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme || 'default');
+}
 
 function App() {
     const [user, setUser] = useState(() => {
@@ -15,13 +20,20 @@ function App() {
         const username = localStorage.getItem('username');
         const role = localStorage.getItem('role');
         const activeLanguage = localStorage.getItem('activeLanguage') || null;
-        return token ? { token, username, role, activeLanguage } : null;
+        const theme = localStorage.getItem('theme') || 'default';
+        return token ? { token, username, role, activeLanguage, theme } : null;
     });
     const [screen, setScreen] = useState('home');
+    const [gameLanguage, setGameLanguage] = useState(null);
+
+    useEffect(() => {
+        applyTheme(user?.theme || 'default');
+    }, [user?.theme]);
 
     function handleAuthSuccess(data) {
         localStorage.setItem('role', data.role);
-        setUser({ token: data.token, username: data.username, role: data.role, activeLanguage: null });
+        const theme = localStorage.getItem('theme') || 'default';
+        setUser({ token: data.token, username: data.username, role: data.role, activeLanguage: null, theme });
     }
 
     function handleLogout() {
@@ -29,13 +41,32 @@ function App() {
         localStorage.removeItem('username');
         localStorage.removeItem('role');
         localStorage.removeItem('activeLanguage');
+        localStorage.removeItem('theme');
         setUser(null);
         setScreen('home');
+        applyTheme('default');
     }
 
     function handleLanguageChange(lang) {
         localStorage.setItem('activeLanguage', lang);
         setUser(prev => ({ ...prev, activeLanguage: lang }));
+    }
+
+    async function handleThemeChange(theme) {
+        localStorage.setItem('theme', theme);
+        setUser(prev => ({ ...prev, theme }));
+        applyTheme(theme);
+        const token = localStorage.getItem('token');
+        try {
+            await fetch(`${API_URL}/api/users/me/theme`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify({ theme }),
+            });
+        } catch { }
     }
 
     if (!user) {
@@ -51,12 +82,15 @@ function App() {
                 <nav>
                     <ul>
                         <li onClick={() => setScreen('home')}>Inicio</li>
-                        <li onClick={() => setScreen('game')}>Juego</li>
+                        <li onClick={() => { setGameLanguage(isAdmin ? null : user.activeLanguage); setScreen('game'); }}>Juego</li>
                         <li onClick={() => setScreen('profile')}>Perfil</li>
                         {isAdmin && (
                             <li onClick={() => setScreen('admin')}>Admin</li>
                         )}
                         <li>Contacto</li>
+                        <li>
+                            <ThemeSelector currentTheme={user.theme} onThemeChange={handleThemeChange} />
+                        </li>
                         <li className="nav-user">
                             <span>Hola, {user.username}</span>
                             <button className="logout-btn" onClick={handleLogout}>Salir</button>
@@ -68,14 +102,15 @@ function App() {
                 {screen === 'home' && (
                     <HomeScreen
                         user={user}
-                        onStartGame={() => setScreen('game')}
+                        onStartGame={(lang) => { setGameLanguage(lang); setScreen('game'); }}
                         onLanguageChange={handleLanguageChange}
+                        onThemeChange={handleThemeChange}
                     />
                 )}
                 {screen === 'game' && (
                     <GameScreen
                         onBack={() => setScreen('home')}
-                        activeLanguage={user.activeLanguage}
+                        activeLanguage={gameLanguage}
                     />
                 )}
                 {screen === 'admin' && isAdmin && (
