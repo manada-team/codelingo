@@ -13,26 +13,26 @@
     display: flex;
     align-items: center;
     gap: 1.5rem;
-    background: white;
-    border: 2px solid #FF69B4;
+    background: var(--card-bg);
+    border: 2px solid var(--accent);
     border-radius: 16px;
     padding: 1.5rem;
-    box-shadow: 4px 4px 0 #FFC0CB;
+    box-shadow: 4px 4px 0 var(--accent-light);
 }
 
 .profile-avatar {
     width: 72px;
     height: 72px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #FF69B4, #FFC0CB);
-    color: white;
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    color: var(--text-on-accent);
     font-size: 2rem;
     font-weight: bold;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    border: 3px solid #FF69B4;
+    border: 3px solid var(--accent);
 }
 
 .profile-identity {
@@ -44,19 +44,19 @@
 .profile-username {
     margin: 0;
     font-size: 1.5rem;
-    color: #FF69B4;
+    color: var(--accent);
     letter-spacing: 1px;
 }
 
 .profile-email {
     margin: 0;
-    color: #888;
+    color: var(--text-secondary);
     font-size: 0.9rem;
 }
 
 .profile-since {
     margin: 0;
-    color: #bbb;
+    color: var(--text-muted);
     font-size: 0.8rem;
 }
 
@@ -70,15 +70,15 @@
 .stat-card {
     flex: 1;
     min-width: 120px;
-    background: white;
-    border: 2px solid #FFC0CB;
+    background: var(--card-bg);
+    border: 2px solid var(--card-border);
     border-radius: 14px;
     padding: 1rem 0.75rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.3rem;
-    box-shadow: 3px 3px 0 #FFC0CB;
+    box-shadow: 3px 3px 0 var(--card-border);
     text-align: center;
 }
 
@@ -89,19 +89,19 @@
 .stat-value {
     font-size: 1.6rem;
     font-weight: bold;
-    color: #FF69B4;
+    color: var(--accent);
 }
 
 .stat-label {
     font-size: 0.72rem;
-    color: #aaa;
+    color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 /* ── Progreso ── */
 .profile-section-title {
-    color: #FF69B4;
+    color: var(--accent);
     font-size: 1rem;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -109,15 +109,15 @@
 }
 
 .profile-progress {
-    background: white;
-    border: 2px solid #FFC0CB;
+    background: var(--card-bg);
+    border: 2px solid var(--card-border);
     border-radius: 16px;
     padding: 1.5rem;
-    box-shadow: 4px 4px 0 #FFC0CB;
+    box-shadow: 4px 4px 0 var(--card-border);
 }
 
 .profile-empty {
-    color: #aaa;
+    color: var(--text-muted);
     font-size: 0.9rem;
     text-align: center;
     padding: 1rem 0;
@@ -136,8 +136,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #FFF5E1;
-    border: 2px solid #FFC0CB;
+    background: var(--surface);
+    border: 2px solid var(--card-border);
     border-radius: 10px;
     padding: 0.7rem 1rem;
     gap: 1rem;
@@ -153,19 +153,19 @@
 .progress-level-num {
     font-size: 0.7rem;
     font-weight: bold;
-    color: #FF69B4;
+    color: var(--accent);
     text-transform: uppercase;
 }
 
 .progress-level-title {
     font-size: 0.95rem;
     font-weight: bold;
-    color: #333;
+    color: var(--text-primary);
 }
 
 .progress-group {
     font-size: 0.75rem;
-    color: #aaa;
+    color: var(--text-muted);
 }
 
 .progress-item-right {
@@ -179,17 +179,17 @@
 .progress-xp {
     font-size: 0.85rem;
     font-weight: bold;
-    color: #FF69B4;
+    color: var(--accent);
 }
 
 .progress-attempts {
     font-size: 0.75rem;
-    color: #888;
+    color: var(--text-secondary);
 }
 
 .progress-date {
     font-size: 0.7rem;
-    color: #bbb;
+    color: var(--text-muted);
 }
 
 /* ── Misc ── */
@@ -197,7 +197,7 @@
 .profile-error {
     text-align: center;
     padding: 3rem;
-    color: #aaa;
+    color: var(--text-muted);
     font-family: 'Courier New', monospace;
 }
 
@@ -217,7 +217,7 @@
 }
 
 .admin-stats-title {
-    color: #FF69B4;
+    color: var(--accent);
     font-size: 1.3rem;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -233,26 +233,26 @@
 .summary-card {
     flex: 1;
     min-width: 140px;
-    background: white;
-    border: 2px solid #FFC0CB;
+    background: var(--card-bg);
+    border: 2px solid var(--card-border);
     border-radius: 14px;
     padding: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.3rem;
-    box-shadow: 3px 3px 0 #FFC0CB;
+    box-shadow: 3px 3px 0 var(--card-border);
 }
 
 .summary-value {
     font-size: 1.8rem;
     font-weight: bold;
-    color: #FF69B4;
+    color: var(--accent);
 }
 
 .summary-label {
     font-size: 0.72rem;
-    color: #aaa;
+    color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     text-align: center;
@@ -262,25 +262,26 @@
     font-family: 'Courier New', monospace;
     font-size: 0.9rem;
     padding: 0.6rem 0.9rem;
-    border: 2px solid #FFC0CB;
+    border: 2px solid var(--card-border);
     border-radius: 10px;
     outline: none;
-    background: #FFF5E1;
+    background: var(--input-bg);
+    color: var(--text-primary);
     transition: border-color 0.2s;
     width: 100%;
     box-sizing: border-box;
 }
 
 .admin-search:focus {
-    border-color: #FF69B4;
+    border-color: var(--accent);
 }
 
 .admin-table-wrapper {
     overflow-x: auto;
-    border: 2px solid #FFC0CB;
+    border: 2px solid var(--card-border);
     border-radius: 14px;
-    box-shadow: 4px 4px 0 #FFC0CB;
-    background: white;
+    box-shadow: 4px 4px 0 var(--card-border);
+    background: var(--card-bg);
 }
 
 .admin-table {
@@ -290,8 +291,8 @@
 }
 
 .admin-table thead {
-    background: linear-gradient(90deg, #FF69B4, #FFC0CB);
-    color: white;
+    background: var(--header-bg);
+    color: var(--text-on-accent);
 }
 
 .admin-table th {
@@ -309,8 +310,8 @@
 
 .admin-table td {
     padding: 0.65rem 1rem;
-    border-bottom: 1px solid #FFF0F5;
-    color: #444;
+    border-bottom: 1px solid var(--card-border);
+    color: var(--text-primary);
     vertical-align: middle;
 }
 
@@ -319,7 +320,7 @@
 }
 
 .admin-table tbody tr:hover td {
-    background: #FFF5E1;
+    background: var(--accent-alpha);
 }
 
 .sort-icon {
@@ -336,15 +337,15 @@
     align-items: center;
     gap: 0.5rem;
     font-weight: bold;
-    color: #333;
+    color: var(--text-primary);
 }
 
 .table-avatar {
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #FF69B4, #FFC0CB);
-    color: white;
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    color: var(--text-on-accent);
     font-size: 0.8rem;
     font-weight: bold;
     display: flex;
@@ -354,22 +355,22 @@
 }
 
 .table-email {
-    color: #888;
+    color: var(--text-secondary);
     font-size: 0.8rem;
 }
 
 .table-xp {
-    color: #FF69B4;
+    color: var(--accent);
     font-weight: bold;
 }
 
 .table-date {
-    color: #aaa;
+    color: var(--text-muted);
     font-size: 0.8rem;
 }
 
 .admin-table-empty {
     text-align: center;
-    color: #aaa;
+    color: var(--text-muted);
     padding: 2rem;
 }

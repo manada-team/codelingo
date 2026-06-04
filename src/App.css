@@ -1,10 +1,81 @@
+/* ── CSS Variables / Theme System ─────────────────────────────────────────── */
+:root {
+  --accent:         #FF69B4;
+  --accent-light:   #FFC0CB;
+  --surface:        #FFF5E1;
+  --bg:             linear-gradient(180deg, #FFC0CB, #FFF5E1);
+  --header-bg:      linear-gradient(90deg, #FF69B4, #FFC0CB);
+  --footer-bg:      #FF69B4;
+  --text-on-accent: #FFF5E1;
+  --card-bg:        #ffffff;
+  --card-border:    #FFC0CB;
+  --text-primary:   #333333;
+  --text-secondary: #888888;
+  --text-muted:     #aaaaaa;
+  --input-bg:       #FFF5E1;
+  --accent-alpha:   rgba(255, 105, 180, 0.12);
+}
+
+[data-theme="hacker"] {
+  --accent:         #00ff41;
+  --accent-light:   #00cc33;
+  --surface:        #0f1f0f;
+  --bg:             #0d0d0d;
+  --header-bg: linear-gradient(90deg, #131313, #2a4e2a);
+  --footer-bg:      #154915;
+  --text-on-accent: #0d0d0d;
+  --card-bg:        #0f1f0f;
+  --card-border:    #00cc33;
+  --text-primary:   #00ff41;
+  --text-secondary: #00cc33;
+  --text-muted:     #009922;
+  --input-bg:       #0a1a0a;
+  --accent-alpha:   rgba(0, 255, 65, 0.10);
+}
+
+[data-theme="retro-arcade"] {
+  --accent:         #ff00ff;
+  --accent-light:   #00ffff;
+  --surface:        #120020;
+  --bg:             linear-gradient(180deg, #0a0a1a, #120020);
+  --header-bg:      linear-gradient(90deg, #1a0030, #0d0040);
+  --footer-bg:      #1a0030;
+  --text-on-accent: #ffffff;
+  --card-bg:        #1a0030;
+  --card-border:    #ff00ff;
+  --text-primary:   #ffffff;
+  --text-secondary: #cc88ff;
+  --text-muted:     #9955ff;
+  --input-bg:       #120020;
+  --accent-alpha:   rgba(255, 0, 255, 0.12);
+}
+
+[data-theme="sunset"] {
+  --accent:         #ff6b35;
+  --accent-light:   #f7c59f;
+  --surface:        #2d1b4e;
+  --bg:             linear-gradient(180deg, #4a1942, #2d1b4e);
+  --header-bg:      linear-gradient(90deg, #c0392b, #8e44ad);
+  --footer-bg:      #c0392b;
+  --text-on-accent: #ffffff;
+  --card-bg:        #3d1f6e;
+  --card-border:    #ff6b35;
+  --text-primary:   #f7c59f;
+  --text-secondary: #cc9966;
+  --text-muted:     #9966aa;
+  --input-bg:       #2d1b4e;
+  --accent-alpha:   rgba(255, 107, 53, 0.12);
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────────── */
 html, body, #root {
   height: 100%;
 }
 
 body {
-  font-family: 'Courier New', monospace; /* tipografía retro */
-  background: linear-gradient(180deg, #FFC0CB, #FFF5E1); /* gradiente girly */
+  font-family: 'Courier New', monospace;
+  background: var(--bg);
+  color: var(--text-primary);
   margin: 0;
   padding: 0;
 }
@@ -16,10 +87,10 @@ body {
   overflow: hidden;
 }
 
-
+/* ── Header ───────────────────────────────────────────────────────────────── */
 .retro-header {
-  background: linear-gradient(90deg, #FF69B4, #FFC0CB);
-  color: white;
+  background: var(--header-bg);
+  color: var(--text-on-accent);
   padding: 1rem;
   text-align: center;
   box-shadow: 0 4px 8px rgba(0,0,0,0.3);
@@ -31,7 +102,23 @@ nav ul {
   justify-content: center;
   gap: 2rem;
   padding: 0;
+  align-items: center;
 }
+
+nav li {
+  color: var(--text-on-accent);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* ── Main ─────────────────────────────────────────────────────────────────── */
+.retro-main {
+  padding: 2rem;
+  text-align: center;
+  flex: 1;
+  overflow-y: auto;
+}
+
 .retro-main.game-mode {
   padding: 0;
   flex: 1;
@@ -40,26 +127,16 @@ nav ul {
   overflow: hidden;
   min-height: 0;
 }
-nav li {
-  color: #FFF5E1;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.retro-main {
-  padding: 2rem;
-  text-align: center;
-  flex: 1;
-  overflow-y: auto;
-}
 
 .retro-main h2 {
-  color: #FF69B4;
+  color: var(--accent);
 }
 
+/* ── Buttons ──────────────────────────────────────────────────────────────── */
 button {
-  background-color: #FFC0CB;
-  border: 2px solid #FF69B4;
+  background-color: var(--accent-light);
+  border: 2px solid var(--accent);
+  color: var(--text-primary);
   padding: 0.8rem 1.2rem;
   font-size: 1rem;
   font-weight: bold;
@@ -70,11 +147,12 @@ button {
 }
 
 button:hover {
-  background-color: #FF69B4;
-  color: white;
+  background-color: var(--accent);
+  color: var(--text-on-accent);
   transform: scale(1.05);
 }
 
+/* ── Nav user area ────────────────────────────────────────────────────────── */
 .nav-user {
   display: flex;
   align-items: center;
@@ -82,14 +160,14 @@ button:hover {
 }
 
 .nav-user span {
-  color: #FFF5E1;
+  color: var(--text-on-accent);
   font-weight: bold;
 }
 
 .logout-btn {
   background: transparent;
-  border: 2px solid #FFF5E1;
-  color: #FFF5E1;
+  border: 2px solid var(--text-on-accent);
+  color: var(--text-on-accent);
   padding: 0.3rem 0.75rem;
   font-size: 0.8rem;
   border-radius: 8px;
@@ -99,14 +177,15 @@ button:hover {
 }
 
 .logout-btn:hover {
-  background: #FFF5E1;
-  color: #FF69B4;
+  background: var(--text-on-accent);
+  color: var(--accent);
   transform: none;
 }
 
+/* ── Footer ───────────────────────────────────────────────────────────────── */
 .retro-footer {
-  background: #FF69B4;
-  color: white;
+  background: var(--footer-bg);
+  color: var(--text-on-accent);
   text-align: center;
   padding: 1rem;
   font-style: italic;

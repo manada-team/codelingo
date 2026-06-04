@@ -10,7 +10,7 @@ const LANGUAGE_INFO = {
     c:      { label: 'C',      icon: '⚙️' },
 };
 
-function HomeScreen({ user, onStartGame, onLanguageChange }) {
+function HomeScreen({ user, onStartGame, onLanguageChange, onThemeChange }) {
     const [profile, setProfile] = useState(null);
     const [recentLevel, setRecentLevel] = useState(null);
     const [funFact, setFunFact] = useState('');
@@ -35,6 +35,9 @@ function HomeScreen({ user, onStartGame, onLanguageChange }) {
 
                 if (profileData.activeLanguage) {
                     onLanguageChange(profileData.activeLanguage);
+                }
+                if (profileData.theme && profileData.theme !== user.theme) {
+                    onThemeChange(profileData.theme);
                 }
 
                 const completed = Array.isArray(progressData) ? progressData.filter(p => p.completed) : [];
@@ -74,7 +77,7 @@ function HomeScreen({ user, onStartGame, onLanguageChange }) {
         } finally {
             setLangLoading(false);
         }
-        onStartGame();
+        onStartGame(lang);
     }
 
     if (loading) return null;
