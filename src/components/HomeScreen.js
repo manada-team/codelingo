@@ -16,6 +16,8 @@ function HomeScreen({ user, onStartGame, onLanguageChange, onThemeChange }) {
     const [funFact, setFunFact] = useState('');
     const [loading, setLoading] = useState(true);
     const [langLoading, setLangLoading] = useState(false);
+    const userTheme = user.theme;
+
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -36,7 +38,7 @@ function HomeScreen({ user, onStartGame, onLanguageChange, onThemeChange }) {
                 if (profileData.activeLanguage) {
                     onLanguageChange(profileData.activeLanguage);
                 }
-                if (profileData.theme && profileData.theme !== user.theme) {
+                if (profileData.theme && profileData.theme !== userTheme) {
                     onThemeChange(profileData.theme);
                 }
 
@@ -51,9 +53,9 @@ function HomeScreen({ user, onStartGame, onLanguageChange, onThemeChange }) {
             }
         }
         fetchData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [onLanguageChange, onThemeChange, userTheme]);
 
-    }, []);
+    // }, []);
 
     async function handleSelectLanguage(lang) {
         if (langLoading) return;
