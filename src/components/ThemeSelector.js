@@ -23,6 +23,11 @@ const THEMES = [
         label: 'Atardecer',
         colors: ['#c0392b', '#8e44ad'],
     },
+    {
+        id: 'albirroja',
+        label: 'Albirroja',
+        colors: ['#D52B1E', '#ffffff'],
+    },
 ];
 
 function ThemeSelector({ currentTheme, onThemeChange }) {

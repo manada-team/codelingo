@@ -32,6 +32,22 @@
   --input-bg:       #0a1a0a;
   --accent-alpha:   rgba(0, 255, 65, 0.10);
 }
+[data-theme="albirroja"] {
+  --accent:         #D52B1E;
+  --accent-light:   #a8bdd5;
+  --surface:        #f5f0f0;
+  --bg:             linear-gradient(180deg, #ffffff, #9891c2);
+  --header-bg:      linear-gradient(90deg, #D52B1E, #a01f15);
+  --footer-bg:      #D52B1E;
+  --text-on-accent: #ffffff;
+  --card-bg:        #ffffff;
+  --card-border:    #D52B1E;
+  --text-primary:   #1a1a1a;
+  --text-secondary: #555555;
+  --text-muted:     #999999;
+  --input-bg:       #f5f0f0;
+  --accent-alpha:   rgba(213, 43, 30, 0.10);
+}
 
 [data-theme="retro-arcade"] {
   --accent:         #ff00ff;
