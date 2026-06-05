@@ -21,14 +21,13 @@ function App() {
         const role = localStorage.getItem('role');
         const activeLanguage = localStorage.getItem('activeLanguage') || null;
         const theme = localStorage.getItem('theme') || 'default';
+        applyTheme(theme);
+
         return token ? { token, username, role, activeLanguage, theme } : null;
     });
     const [screen, setScreen] = useState('home');
     const [gameLanguage, setGameLanguage] = useState(null);
 
-    useEffect(() => {
-        applyTheme(user?.theme || 'default');
-    }, [user?.theme]);
 
     function handleAuthSuccess(data) {
         localStorage.setItem('role', data.role);

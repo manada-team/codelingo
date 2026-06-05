@@ -47,7 +47,8 @@ function HomeScreen({ user, onStartGame, onLanguageChange }) {
             }
         }
         fetchData();
-    }, [onLanguageChange]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     async function handleSelectLanguage(lang) {
         if (langLoading) return;
