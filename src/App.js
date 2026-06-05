@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import './App.css';
 import AuthScreen from './components/AuthScreen';
 import GameScreen from './components/GameScreen';
