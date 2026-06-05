@@ -49,8 +49,6 @@ function HomeScreen({ user, onStartGame, onLanguageChange }) {
         fetchData();
     }, [onLanguageChange]);
 
-    // }, []);
-
     async function handleSelectLanguage(lang) {
         if (langLoading) return;
         setLangLoading(true);
