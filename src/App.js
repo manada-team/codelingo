@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import './App.css';
 import AuthScreen from './components/AuthScreen';
 import GameScreen from './components/GameScreen';
@@ -21,14 +21,13 @@ function App() {
         const role = localStorage.getItem('role');
         const activeLanguage = localStorage.getItem('activeLanguage') || null;
         const theme = localStorage.getItem('theme') || 'default';
+        applyTheme(theme);
+
         return token ? { token, username, role, activeLanguage, theme } : null;
     });
     const [screen, setScreen] = useState('home');
     const [gameLanguage, setGameLanguage] = useState(null);
 
-    useEffect(() => {
-        applyTheme(user?.theme || 'default');
-    }, [user?.theme]);
 
     function handleAuthSuccess(data) {
         localStorage.setItem('role', data.role);
@@ -47,12 +46,12 @@ function App() {
         applyTheme('default');
     }
 
-    function handleLanguageChange(lang) {
+    const handleLanguageChange = useCallback((lang) => {
         localStorage.setItem('activeLanguage', lang);
         setUser(prev => ({ ...prev, activeLanguage: lang }));
-    }
+    }, []);
 
-    async function handleThemeChange(theme) {
+    const handleThemeChange = useCallback(async (theme) => {
         localStorage.setItem('theme', theme);
         setUser(prev => ({ ...prev, theme }));
         applyTheme(theme);
@@ -67,7 +66,7 @@ function App() {
                 body: JSON.stringify({ theme }),
             });
         } catch { }
-    }
+    }, []);
 
     if (!user) {
         return <AuthScreen onAuthSuccess={handleAuthSuccess} />;

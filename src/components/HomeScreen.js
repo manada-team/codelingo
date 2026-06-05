@@ -36,10 +36,9 @@ function HomeScreen({ user, onStartGame, onLanguageChange, onThemeChange }) {
                 if (profileData.activeLanguage) {
                     onLanguageChange(profileData.activeLanguage);
                 }
-                if (profileData.theme && profileData.theme !== user.theme) {
+                if (profileData.theme) {
                     onThemeChange(profileData.theme);
                 }
-
                 const completed = Array.isArray(progressData) ? progressData.filter(p => p.completed) : [];
                 if (completed.length > 0) {
                     const recent = [...completed].sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt))[0];
@@ -52,7 +51,6 @@ function HomeScreen({ user, onStartGame, onLanguageChange, onThemeChange }) {
         }
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-
     }, []);
 
     async function handleSelectLanguage(lang) {
