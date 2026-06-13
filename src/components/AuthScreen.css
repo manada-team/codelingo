@@ -4,113 +4,197 @@
     align-items: center;
     justify-content: center;
     background: var(--bg);
+    padding: 1rem;
     font-family: 'Courier New', monospace;
 }
 
 .auth-card {
     background: var(--card-bg);
-    border: 2px solid var(--accent);
-    border-radius: 16px;
+    border: 2px solid var(--card-border);
+    border-radius: 12px;
     padding: 2.5rem 2rem;
     width: 100%;
-    max-width: 380px;
-    box-shadow: 4px 4px 0 var(--accent);
-    text-align: center;
+    max-width: 420px;
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.3);
 }
 
 .auth-logo {
-    color: var(--accent);
     font-size: 2rem;
+    font-weight: bold;
+    color: var(--accent);
+    text-align: center;
     margin: 0 0 0.25rem;
     letter-spacing: 2px;
-    text-transform: uppercase;
 }
 
 .auth-subtitle {
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    margin: 0 0 1.5rem;
+    color: var(--text-secondary);
+    text-align: center;
+    font-size: 0.9rem;
+    margin: 0 0 1.75rem;
 }
 
 .auth-tabs {
     display: flex;
-    margin-bottom: 1.25rem;
-    border: 2px solid var(--accent);
-    border-radius: 10px;
-    overflow: hidden;
+    border-bottom: 2px solid var(--card-border);
+    margin-bottom: 1.5rem;
 }
 
 .auth-tab {
     flex: 1;
-    background: var(--card-bg);
+    background: none;
     border: none;
-    padding: 0.6rem;
+    border-bottom: 3px solid transparent;
+    color: var(--text-muted);
+    padding: 0.6rem 0;
+    font-size: 0.95rem;
     font-family: 'Courier New', monospace;
     font-weight: bold;
-    font-size: 0.85rem;
     cursor: pointer;
-    color: var(--accent);
-    transition: all 0.2s ease;
     box-shadow: none;
     border-radius: 0;
+    margin-bottom: -2px;
+    transition: color 0.15s, border-color 0.15s;
     transform: none;
 }
 
 .auth-tab:hover {
-    background: var(--accent-light);
-    color: var(--text-on-accent);
+    background: none;
+    color: var(--accent);
     transform: none;
+    border-bottom: 3px solid var(--accent-light);
 }
 
 .auth-tab.active {
-    background: var(--accent);
-    color: var(--text-on-accent);
+    color: var(--accent);
+    border-bottom: 3px solid var(--accent);
+}
+
+.auth-error {
+    background: rgba(220, 53, 53, 0.1);
+    border: 2px solid #dc3535;
+    color: #dc3535;
+    border-radius: 8px;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+    font-family: 'Courier New', monospace;
+}
+
+.auth-success {
+    background: var(--accent-alpha);
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    border-radius: 8px;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+    font-family: 'Courier New', monospace;
 }
 
 .auth-form {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    text-align: left;
+}
+
+.auth-form-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--accent);
+    margin: 0 0 0.25rem;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 1px;
+}
+
+.auth-form-desc {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin: 0 0 0.5rem;
+    line-height: 1.4;
 }
 
 .auth-form label {
-    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
     font-weight: bold;
-    color: var(--accent);
-    margin-top: 0.25rem;
+    margin-top: 0.4rem;
 }
 
 .auth-form input {
-    font-family: 'Courier New', monospace;
-    font-size: 0.9rem;
-    padding: 0.55rem 0.75rem;
+    background: var(--input-bg);
     border: 2px solid var(--card-border);
     border-radius: 8px;
-    outline: none;
-    transition: border-color 0.2s;
-    background: var(--input-bg);
     color: var(--text-primary);
+    font-size: 0.95rem;
+    font-family: 'Courier New', monospace;
+    padding: 0.6rem 0.85rem;
+    outline: none;
+    transition: border-color 0.15s;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .auth-form input:focus {
     border-color: var(--accent);
 }
 
-.auth-form button[type='submit'] {
-    margin-top: 1rem;
+.auth-form button[type="submit"] {
+    margin-top: 0.75rem;
     width: 100%;
-    padding: 0.7rem;
-    font-size: 1rem;
 }
 
-.auth-error {
-    background: #ffe0e0;
-    border: 1px solid #ff9999;
-    color: #cc0000;
-    border-radius: 8px;
-    padding: 0.5rem 0.75rem;
+.auth-password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.auth-password-wrapper input {
+    padding-right: 2.75rem;
+}
+
+.auth-eye-btn {
+    position: absolute;
+    right: 0.6rem;
+    background: none;
+    border: none;
+    box-shadow: none;
+    padding: 0.25rem;
+    cursor: pointer;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    transform: none;
+}
+
+.auth-eye-btn:hover {
+    color: var(--accent);
+    background: none;
+    box-shadow: none;
+    transform: none;
+}
+
+.auth-link-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
     font-size: 0.85rem;
-    margin-bottom: 0.75rem;
-    text-align: left;
+    font-family: 'Courier New', monospace;
+    cursor: pointer;
+    text-align: center;
+    padding: 0.4rem;
+    margin-top: 0.25rem;
+    box-shadow: none;
+    border-radius: 0;
+    transition: color 0.15s;
+    transform: none;
+}
+
+.auth-link-btn:hover {
+    color: var(--accent);
+    background: none;
+    box-shadow: none;
+    transform: none;
 }
