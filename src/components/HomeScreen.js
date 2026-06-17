@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
 import './HomeScreen.css';
 import { FaCheckCircle, FaFire, FaStar, FaTrophy } from "react-icons/fa";
+import pythonIcon from '../assets/python.svg';
+import javaIcon from '../assets/java.svg';
+import cIcon from '../assets/c.svg';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8081';
 
 const LANGUAGE_INFO = {
-    python: { label: 'Python', icon: '🐍' },
-    java:   { label: 'Java',   icon: '☕' },
-    c:      { label: 'C',      icon: '⚙️' },
+        python: { label: 'Python', icon: pythonIcon },
+        java:   { label: 'Java',   icon: javaIcon },
+    c:      { label: 'C',      icon: cIcon },
 };
 
 function HomeScreen({ user, onStartGame, onLanguageChange, onThemeChange }) {
@@ -107,8 +110,7 @@ function HomeScreen({ user, onStartGame, onLanguageChange, onThemeChange }) {
                                 onClick={() => handleSelectLanguage(key)}
                                 disabled={langLoading}
                             >
-                                <span className="home-lang-card-icon">{icon}</span>
-                                <span className="home-lang-card-name">{label}</span>
+                                <img src={icon} alt={label} className="home-lang-card-icon" />                                <span className="home-lang-card-name">{label}</span>
                                 <span className="home-lang-card-xp">
                                     {isStarted ? `${xpByLang[key]} XP` : 'Iniciar racha'}
                                 </span>

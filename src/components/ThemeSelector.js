@@ -10,7 +10,7 @@ const THEMES = [
     },
     {
         id: 'hacker',
-        label: 'Facherito',
+        label: 'Hacker',
         colors: ['#0d0d0d', '#00ff41'],
     },
     {
