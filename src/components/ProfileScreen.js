@@ -4,7 +4,6 @@ import {FaBullseye, FaCheckCircle, FaFire, FaStar, FaTrophy} from "react-icons/f
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8081';
 
-// ── Vista PLAYER ────────────────────────────────────────────────
 function PlayerProfile({ token }) {
     const [profile, setProfile] = useState(null);
     const [progress, setProgress] = useState([]);
@@ -180,11 +179,20 @@ function AdminStats({ token }) {
 
     const players = users.filter(u => u.role === 'PLAYER');
 
+    const searchTerms = search
+        .split(/[\s,]+/)
+        .map(t => t.trim().toLowerCase())
+        .filter(t => t.length > 0);
+
     const filtered = players
-        .filter(u =>
-            u.username.toLowerCase().includes(search.toLowerCase()) ||
-            u.email.toLowerCase().includes(search.toLowerCase())
-        )
+        .filter(u => {
+            if (searchTerms.length === 0) return true;
+            const username = u.username.toLowerCase();
+            const email = u.email.toLowerCase();
+            return searchTerms.some(term =>
+                username.includes(term) || email.includes(term)
+            );
+        })
         .sort((a, b) => {
             const av = a[sortKey] ?? '';
             const bv = b[sortKey] ?? '';
@@ -229,12 +237,11 @@ function AdminStats({ token }) {
                 </div>
             </div>
 
-            {/* Buscador */}
+            {/* buscadorr */}
             <input
                 className="admin-search"
                 type="text"
-                placeholder="Buscar por usuario o email..."
-                value={search}
+                placeholder="Buscar por usuario (separar varios con coma o espacio)..."                value={search}
                 onChange={e => setSearch(e.target.value)}
             />
 
