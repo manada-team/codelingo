@@ -174,7 +174,7 @@
 /* ── Panel derecho ───────────────────────────────────────────────────────── */
 .playground-panel {
     display: grid;
-    grid-template-rows: auto 1fr 90px 190px;
+    grid-template-rows: auto 1fr 190px;
     flex: 1;
     min-height: 0;
     overflow: hidden;
@@ -313,10 +313,10 @@
 
 .stdin-body {
     flex: 1;
-    background: #1a1a2e;
-    color: #e0e0e0;
+    background: transparent;
     border: none;
     outline: none;
+    color: #ccc;
     font-family: 'Courier New', monospace;
     font-size: 0.85rem;
     padding: 0.4rem 1rem;
