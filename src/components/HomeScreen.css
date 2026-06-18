@@ -159,7 +159,10 @@
 }
 
 .home-lang-card-icon {
-    font-size: 1.3rem;
+    width: 2rem;
+    height: 2rem;
+    object-fit: contain;
+    flex-shrink: 0;
 }
 
 .home-lang-card-name {

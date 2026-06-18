@@ -86,7 +86,7 @@ function App() {
                         {isAdmin && (
                             <li onClick={() => setScreen('admin')}>Admin</li>
                         )}
-                        <li>Contacto</li>
+                        {/*<li>Contacto</li>*/}
                         <li>
                             <ThemeSelector currentTheme={user.theme} onThemeChange={handleThemeChange} />
                         </li>
