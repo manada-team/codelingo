@@ -30,7 +30,6 @@ function GameScreen({ onBack, activeLanguage }) {
     const [stderr, setStderr] = useState('');
     const [loading, setLoading] = useState(false);
     const [timeMs, setTimeMs] = useState(null);
-    const [stdin, setStdin] = useState('');
 
     const [levels, setLevels] = useState([]);
     const [levelIndex, setLevelIndex] = useState(0);
@@ -124,7 +123,7 @@ function GameScreen({ onBack, activeLanguage }) {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
                 },
-                body: JSON.stringify({ code: codeRef.current, language, stdin }),
+                body: JSON.stringify({ code: codeRef.current, language }),
             });
             const data = await res.json();
             if (data.error) {
@@ -333,17 +332,6 @@ function GameScreen({ onBack, activeLanguage }) {
                             automaticLayout: true,
                             padding: { top: 12 },
                         }}
-                    />
-                </div>
-
-                <div className="stdin-panel">
-                    <div className="stdin-header">Entrada (stdin)</div>
-                    <textarea
-                        className="stdin-body"
-                        placeholder="Escribí el input de tu programa aquí (cada línea = un Enter)..."
-                        value={stdin}
-                        onChange={e => setStdin(e.target.value)}
-                        spellCheck={false}
                     />
                 </div>
 
