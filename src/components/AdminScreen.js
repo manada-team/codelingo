@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './AdminScreen.css';
+import AdminProblemsPanel from './AdminProblemsPanel';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8081';
 
@@ -14,6 +15,7 @@ const EMPTY_FORM = {
 };
 
 function AdminScreen() {
+    const [tab, setTab] = useState('levels');
     const [form, setForm] = useState(EMPTY_FORM);
     const [levelGroups, setLevelGroups] = useState([]);
     const [levels, setLevels] = useState([]);
@@ -152,161 +154,181 @@ function AdminScreen() {
     }
 
     return (
-        <div className="admin-screen">
-            <div className="admin-left">
-                <h2 className="admin-title">{editingId ? 'Editar nivel' : 'Crear nivel'}</h2>
-
-                {error && <p className="admin-error">{error}</p>}
-                {success && <p className="admin-success">{success}</p>}
-
-                {groupsLoading ? (
-                    <p className="admin-loading">Cargando grupos...</p>
-                ) : (
-                    <form className="admin-form" onSubmit={handleSubmit}>
-                        <div className="admin-row">
-                            <div className="admin-field">
-                                <label>Número de nivel</label>
-                                <input
-                                    type="number"
-                                    name="levelNumber"
-                                    value={form.levelNumber}
-                                    onChange={handleChange}
-                                    min="1"
-                                    required
-                                />
-                            </div>
-                            <div className="admin-field">
-                                <label>XP de recompensa</label>
-                                <input
-                                    type="number"
-                                    name="xpReward"
-                                    value={form.xpReward}
-                                    onChange={handleChange}
-                                    min="0"
-                                    required
-                                />
-                            </div>
-                        </div>
-
-                        <div className="admin-field">
-                            <label>Título</label>
-                            <input
-                                type="text"
-                                name="title"
-                                value={form.title}
-                                onChange={handleChange}
-                                placeholder="Ej: Variables en Python"
-                                required
-                            />
-                        </div>
-
-                        <div className="admin-field">
-                            <label>Descripción <span className="admin-optional">(opcional)</span></label>
-                            <textarea
-                                name="description"
-                                value={form.description}
-                                onChange={handleChange}
-                                placeholder="Breve descripción del nivel..."
-                                rows={2}
-                            />
-                        </div>
-
-                        <div className="admin-field">
-                            <label>Enunciado del desafío</label>
-                            <textarea
-                                name="challengeContent"
-                                value={form.challengeContent}
-                                onChange={handleChange}
-                                placeholder="¿Cuál es el resultado de...?"
-                                rows={5}
-                                required
-                            />
-                        </div>
-
-                        <div className="admin-field">
-                            <label>Salida esperada</label>
-                            <textarea
-                                name="expectedOutput"
-                                value={form.expectedOutput}
-                                onChange={handleChange}
-                                placeholder="Resultado exacto que debe ingresar el jugador"
-                                rows={2}
-                                required
-                            />
-                        </div>
-
-                        <div className="admin-field">
-                            <label>Grupo de niveles</label>
-                            <select
-                                name="levelGroupId"
-                                value={form.levelGroupId}
-                                onChange={handleChange}
-                                required
-                            >
-                                <option value="">-- Seleccioná un grupo --</option>
-                                {levelGroups.map(g => (
-                                    <option key={g.id} value={g.id}>
-                                        {g.name} ({g.difficulty}) — Niveles {g.minLevel}–{g.maxLevel}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-
-                        <div className="admin-form-actions">
-                            <button type="submit" className="admin-submit" disabled={loading}>
-                                {loading
-                                    ? (editingId ? 'Guardando...' : 'Creando...')
-                                    : (editingId ? '✓ Guardar cambios' : '+ Crear nivel')}
-                            </button>
-                            {editingId && (
-                                <button type="button" className="admin-cancel-btn" onClick={handleCancelEdit}>
-                                    Cancelar
-                                </button>
-                            )}
-                        </div>
-                    </form>
-                )}
+        <>
+            <div className="admin-tabs">
+                <button
+                    className={`admin-tab${tab === 'levels' ? ' active' : ''}`}
+                    onClick={() => setTab('levels')}
+                >
+                    Niveles
+                </button>
+                <button
+                    className={`admin-tab${tab === 'problems' ? ' active' : ''}`}
+                    onClick={() => setTab('problems')}
+                >
+                    Problemas
+                </button>
             </div>
+            {tab === 'problems' ? (
+                <AdminProblemsPanel />
+            ) : (
+                <div className="admin-screen">
+                    <div className="admin-left">
+                        <h2 className="admin-title">{editingId ? 'Editar nivel' : 'Crear nivel'}</h2>
 
-            <div className="admin-right">
-                <h2 className="admin-title">Niveles existentes</h2>
-                {levels.length === 0 ? (
-                    <p className="admin-loading">No hay niveles aún.</p>
-                ) : (
-                    <ul className="admin-levels-list">
-                        {levels
-                            .slice()
-                            .sort((a, b) => a.levelNumber - b.levelNumber)
-                            .map(level => (
-                                <li
-                                    key={level.id}
-                                    className={`admin-level-item${editingId === level.id ? ' admin-level-item--editing' : ''}`}
-                                >
-                                    <div className="admin-level-info">
-                                        <span className="admin-level-num">#{level.levelNumber}</span>
-                                        <span className="admin-level-title">{level.title}</span>
-                                        <span className="admin-level-group">{level.levelGroupName}</span>
+                        {error && <p className="admin-error">{error}</p>}
+                        {success && <p className="admin-success">{success}</p>}
+
+                        {groupsLoading ? (
+                            <p className="admin-loading">Cargando grupos...</p>
+                        ) : (
+                            <form className="admin-form" onSubmit={handleSubmit}>
+                                <div className="admin-row">
+                                    <div className="admin-field">
+                                        <label>Número de nivel</label>
+                                        <input
+                                            type="number"
+                                            name="levelNumber"
+                                            value={form.levelNumber}
+                                            onChange={handleChange}
+                                            min="1"
+                                            required
+                                        />
                                     </div>
-                                    <div className="admin-level-actions">
-                                        <button
-                                            className="admin-edit-btn"
-                                            onClick={() => handleEdit(level)}
-                                        >
-                                            Editar
-                                        </button>
-                                        <button
-                                            className="admin-delete-btn"
-                                            onClick={() => handleDelete(level.id)}
-                                        >
-                                            Eliminar
-                                        </button>
+                                    <div className="admin-field">
+                                        <label>XP de recompensa</label>
+                                        <input
+                                            type="number"
+                                            name="xpReward"
+                                            value={form.xpReward}
+                                            onChange={handleChange}
+                                            min="0"
+                                            required
+                                        />
                                     </div>
-                                </li>
-                            ))}
-                    </ul>
-                )}
-            </div>
-        </div>
+                                </div>
+
+                                <div className="admin-field">
+                                    <label>Título</label>
+                                    <input
+                                        type="text"
+                                        name="title"
+                                        value={form.title}
+                                        onChange={handleChange}
+                                        placeholder="Ej: Variables en Python"
+                                        required
+                                    />
+                                </div>
+
+                                <div className="admin-field">
+                                    <label>Descripción <span className="admin-optional">(opcional)</span></label>
+                                    <textarea
+                                        name="description"
+                                        value={form.description}
+                                        onChange={handleChange}
+                                        placeholder="Breve descripción del nivel..."
+                                        rows={2}
+                                    />
+                                </div>
+
+                                <div className="admin-field">
+                                    <label>Enunciado del desafío</label>
+                                    <textarea
+                                        name="challengeContent"
+                                        value={form.challengeContent}
+                                        onChange={handleChange}
+                                        placeholder="¿Cuál es el resultado de...?"
+                                        rows={5}
+                                        required
+                                    />
+                                </div>
+
+                                <div className="admin-field">
+                                    <label>Salida esperada</label>
+                                    <textarea
+                                        name="expectedOutput"
+                                        value={form.expectedOutput}
+                                        onChange={handleChange}
+                                        placeholder="Resultado exacto que debe ingresar el jugador"
+                                        rows={2}
+                                        required
+                                    />
+                                </div>
+
+                                <div className="admin-field">
+                                    <label>Grupo de niveles</label>
+                                    <select
+                                        name="levelGroupId"
+                                        value={form.levelGroupId}
+                                        onChange={handleChange}
+                                        required
+                                    >
+                                        <option value="">-- Seleccioná un grupo --</option>
+                                        {levelGroups.map(g => (
+                                            <option key={g.id} value={g.id}>
+                                                {g.name} ({g.difficulty}) — Niveles {g.minLevel}–{g.maxLevel}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div className="admin-form-actions">
+                                    <button type="submit" className="admin-submit" disabled={loading}>
+                                        {loading
+                                            ? (editingId ? 'Guardando...' : 'Creando...')
+                                            : (editingId ? '✓ Guardar cambios' : '+ Crear nivel')}
+                                    </button>
+                                    {editingId && (
+                                        <button type="button" className="admin-cancel-btn" onClick={handleCancelEdit}>
+                                            Cancelar
+                                        </button>
+                                    )}
+                                </div>
+                            </form>
+                        )}
+                    </div>
+
+                    <div className="admin-right">
+                        <h2 className="admin-title">Niveles existentes</h2>
+                        {levels.length === 0 ? (
+                            <p className="admin-loading">No hay niveles aún.</p>
+                        ) : (
+                            <ul className="admin-levels-list">
+                                {levels
+                                    .slice()
+                                    .sort((a, b) => a.levelNumber - b.levelNumber)
+                                    .map(level => (
+                                        <li
+                                            key={level.id}
+                                            className={`admin-level-item${editingId === level.id ? ' admin-level-item--editing' : ''}`}
+                                        >
+                                            <div className="admin-level-info">
+                                                <span className="admin-level-num">#{level.levelNumber}</span>
+                                                <span className="admin-level-title">{level.title}</span>
+                                                <span className="admin-level-group">{level.levelGroupName}</span>
+                                            </div>
+                                            <div className="admin-level-actions">
+                                                <button
+                                                    className="admin-edit-btn"
+                                                    onClick={() => handleEdit(level)}
+                                                >
+                                                    Editar
+                                                </button>
+                                                <button
+                                                    className="admin-delete-btn"
+                                                    onClick={() => handleDelete(level.id)}
+                                                >
+                                                    Eliminar
+                                                </button>
+                                            </div>
+                                        </li>
+                                    ))}
+                            </ul>
+                        )}
+                    </div>
+                </div>
+            )}
+        </>
     );
 }
 
