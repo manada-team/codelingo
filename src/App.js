@@ -2,8 +2,10 @@ import { useState, useCallback } from 'react';
 import './App.css';
 import AuthScreen from './components/AuthScreen';
 import GameScreen from './components/GameScreen';
+import ProblemsScreen from './components/ProblemsScreen';
 import AdminScreen from './components/AdminScreen';
 import './components/GameScreen.css';
+import './components/ProblemsScreen.css';
 import ProfileScreen from './components/ProfileScreen';
 import HomeScreen from './components/HomeScreen';
 import ThemeSelector from './components/ThemeSelector';
@@ -82,6 +84,7 @@ function App() {
                     <ul>
                         <li onClick={() => setScreen('home')}>Inicio</li>
                         <li onClick={() => { setGameLanguage(isAdmin ? null : user.activeLanguage); setScreen('game'); }}>Juego</li>
+                        <li onClick={() => { setGameLanguage(isAdmin ? null : user.activeLanguage); setScreen('problems'); }}>Problemas</li>
                         <li onClick={() => setScreen('profile')}>Perfil</li>
                         {isAdmin && (
                             <li onClick={() => setScreen('admin')}>Admin</li>
@@ -97,7 +100,7 @@ function App() {
                     </ul>
                 </nav>
             </header>
-            <main className={`retro-main${screen === 'game' ? ' game-mode' : ''}`}>
+            <main className={`retro-main${screen === 'game' || screen === 'problems' ? ' game-mode' : ''}`}>
                 {screen === 'home' && (
                     <HomeScreen
                         user={user}
@@ -108,6 +111,12 @@ function App() {
                 )}
                 {screen === 'game' && (
                     <GameScreen
+                        onBack={() => setScreen('home')}
+                        activeLanguage={gameLanguage}
+                    />
+                )}
+                {screen === 'problems' && (
+                    <ProblemsScreen
                         onBack={() => setScreen('home')}
                         activeLanguage={gameLanguage}
                     />
