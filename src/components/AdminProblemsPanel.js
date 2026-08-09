@@ -8,6 +8,7 @@ const EMPTY_FORM = {
     problemNumber: '',
     title: '',
     description: '',
+    starterCode: '',
     difficulty: 'EASY',
     xpReward: 20,
     testCases: [{ ...EMPTY_TEST_CASE }],
@@ -91,6 +92,7 @@ function AdminProblemsPanel() {
                 problemNumber: data.problemNumber,
                 title: data.title,
                 description: data.description || '',
+                starterCode: data.starterCode || '',
                 difficulty: data.difficulty,
                 xpReward: data.xpReward,
                 testCases: data.testCases.length > 0
@@ -133,6 +135,7 @@ function AdminProblemsPanel() {
                 problemNumber: Number(form.problemNumber),
                 title: form.title,
                 description: form.description,
+                starterCode: form.starterCode,
                 difficulty: form.difficulty,
                 xpReward: Number(form.xpReward),
                 testCases: form.testCases.map(tc => ({
@@ -255,6 +258,20 @@ function AdminProblemsPanel() {
                             placeholder="Leé dos enteros por stdin e imprimí su suma..."
                             rows={4}
                             required
+                        />
+                    </div>
+
+                    <div className="admin-field">
+                        <label>
+                            Código inicial
+                            <span className="admin-optional"> (opcional, se precarga en el editor del jugador)</span>
+                        </label>
+                        <textarea
+                            name="starterCode"
+                            value={form.starterCode}
+                            onChange={handleChange}
+                            placeholder={'def prueba():\n    n = input()\n\n    # Agregue su solucion abajo de esta linea'}
+                            rows={5}
                         />
                     </div>
 
