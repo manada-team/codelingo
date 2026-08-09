@@ -294,7 +294,7 @@ function ProblemsScreen({ onBack, activeLanguage }) {
                         key={codeKey}
                         height="100%"
                         language={LANGUAGES[language].monacoLang}
-                        defaultValue={savedCode[codeKey] || ''}
+                        defaultValue={savedCode[codeKey] ?? problem?.starterCode ?? ''}
                         onMount={(editor) => {
                             codeRef.current = editor.getValue();
                             editor.onDidChangeModelContent(() => {

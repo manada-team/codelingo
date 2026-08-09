@@ -1,9 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import { loader } from '@monaco-editor/react';
+
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+// Serví monaco-editor desde /vs (copiado a public/ por scripts/copy-monaco.js)
+// en vez del CDN de jsdelivr, para no depender de que ese CDN esté disponible.
+loader.config({ paths: { vs: '/vs' } });
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <App />
